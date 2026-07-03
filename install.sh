@@ -170,7 +170,7 @@ fi
 cat > "$nginx_conf" <<EOF
 server {
     # Слушаем и IPv4, и IPv6
-    listen 0.0.0.0:${nginx_port} ssl http2;
+    listen 127.0.0.1:${nginx_port} ssl http2;
     listen [::]:${nginx_port} ssl http2; 
     
     server_name ${domain};
