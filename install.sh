@@ -169,8 +169,10 @@ fi
 # Создаем новую конфигурацию
 cat > "$nginx_conf" <<EOF
 server {
-    # Слушаем только локально
+    # Слушаем и IPv4, и IPv6
+    listen 0.0.0.0:${nginx_port} ssl http2;
     listen [::]:${nginx_port} ssl http2; 
+    
     server_name ${domain};
 
     # Ваши готовые сертификаты
@@ -180,7 +182,7 @@ server {
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_ciphers HIGH:!aNULL:!MD5;
 
-    # Статический сайт
+    # Простая заглушка
     location / {
         root /var/www/html;
         index index.html index.htm;
