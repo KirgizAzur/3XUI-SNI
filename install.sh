@@ -55,24 +55,26 @@ done
 
 msg "🔄 Обновление Nginx до последней версии..."
 
-# Проверяем текущую версию
-current_version=$(nginx -v 2>&1 | grep -oP 'nginx/\K[0-9.]+' || echo "0")
+# Удаляем старый репозиторий если есть
+rm -f /etc/apt/sources.list.d/nginx.list
 
-# Добавляем официальный репозиторий Nginx
-apt install -y curl gnupg2 ca-certificates lsb-release
+# Устанавливаем зависимости
+apt install -y curl gnupg2 ca-certificates lsb-release wget
 
-curl -fsSL https://nginx.org/keys/nginx_signing.key | gpg --dearmor | tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
+# Добавляем ключ
+wget -qO - https://nginx.org/keys/nginx_signing.key | gpg --dearmor | tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
 
+# Добавляем репозиторий
 distro=$(lsb_release -cs)
 echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] http://nginx.org/packages/debian $distro nginx" | tee /etc/apt/sources.list.d/nginx.list
 
-# Обновляем и устанавливаем последнюю версию
+# Обновляем и устанавливаем
 apt update
 apt install -y nginx
 
-# Проверяем новую версию
-new_version=$(nginx -v 2>&1 | grep -oP 'nginx/\K[0-9.]+')
-ok "Nginx обновлен до версии: $new_version"
+# Проверяем версию
+new_version=$(nginx -v 2>&1 | grep -oP 'nginx/\K[0-9.]+' || echo "unknown")
+ok "Nginx установлен версии: $new_version"
 
 # ==========================
 
@@ -181,8 +183,11 @@ rm -rf "${site_dir:?}"/*
 # Копируем файлы шаблона в /var/www/html/
 cp -r "${template}/." "$site_dir/"
 
-# Путь к конфигурации Nginx
-nginx_conf="/etc/nginx/sites-available/default"
+# ==========================
+# СОЗДАЕМ КОНФИГ В /etc/nginx/conf.d/main.conf
+# ==========================
+
+nginx_conf="/etc/nginx/conf.d/main.conf"
 
 # Проверяем, существует ли файл конфигурации
 if [ -f "$nginx_conf" ]; then
@@ -192,7 +197,7 @@ if [ -f "$nginx_conf" ]; then
     ok "Создан бэкап: ${backup_name}"
 fi
 
-# Создаем новую конфигурацию (НОВЫЙ СИНТАКСИС - без http2 в listen)
+# Создаем новую конфигурацию
 cat > "$nginx_conf" <<EOF
 server {
     listen 127.0.0.1:${nginx_port} ssl;
@@ -217,6 +222,14 @@ server {
     error_log /var/log/nginx/${domain}_error.log;
 }
 EOF
+
+# Удаляем старый конфиг в sites-available/default если есть
+if [ -f "/etc/nginx/sites-available/default" ]; then
+    rm -f /etc/nginx/sites-available/default
+    ok "Удален старый конфиг /etc/nginx/sites-available/default"
+fi
+
+# ==========================
 
 msg "⚙ Проверка конфигурации Nginx..."
 nginx -t || err "Ошибка в конфигурации Nginx."
