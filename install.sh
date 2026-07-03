@@ -31,7 +31,7 @@ info()  { echo -e "${CYAN}$1${RESET}"; }
 clear
 echo -e "${CYAN}${BOLD}"
 echo "========================================="
-echo "      3XUI SNI Installer"
+echo "      3X-UI SNI Installer"
 echo "========================================="
 echo -e "${RESET}"
 
