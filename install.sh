@@ -9,6 +9,8 @@ set -e
 github_user="KirgizAzur"
 repo_name="3x-ui-SNI"
 
+
+
 tmp_dir="/tmp/3xui-camo-installer"
 site_dir="/var/www/html"
 
@@ -189,13 +191,8 @@ cp -r "${template}/." "$site_dir/"
 
 nginx_conf="/etc/nginx/conf.d/main.conf"
 
-# Проверяем, существует ли файл конфигурации
-if [ -f "$nginx_conf" ]; then
-    # Создаем бэкап с датой
-    backup_name="${nginx_conf}.bak.$(date +%Y%m%d_%H%M%S)"
-    cp "$nginx_conf" "$backup_name"
-    ok "Создан бэкап: ${backup_name}"
-fi
+# Если файл существует - перезаписываем
+ok "Перезапись конфига: ${nginx_conf}"
 
 # Создаем новую конфигурацию
 cat > "$nginx_conf" <<EOF
@@ -222,6 +219,12 @@ server {
     error_log /var/log/nginx/${domain}_error.log;
 }
 EOF
+
+# Удаляем default.conf если он есть
+if [ -f "/etc/nginx/conf.d/default.conf" ]; then
+    rm -f /etc/nginx/conf.d/default.conf
+    ok "Удален /etc/nginx/conf.d/default.conf"
+fi
 
 # ==========================
 
