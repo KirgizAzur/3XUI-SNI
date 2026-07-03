@@ -223,12 +223,6 @@ server {
 }
 EOF
 
-# Удаляем старый конфиг в sites-available/default если есть
-if [ -f "/etc/nginx/sites-available/default" ]; then
-    rm -f /etc/nginx/sites-available/default
-    ok "Удален старый конфиг /etc/nginx/sites-available/default"
-fi
-
 # ==========================
 
 msg "⚙ Проверка конфигурации Nginx..."
