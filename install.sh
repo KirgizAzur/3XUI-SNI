@@ -49,6 +49,33 @@ for p in git curl wget unzip ca-certificates nginx; do
     fi
 done
 
+# ==========================
+# ОБНОВЛЕНИЕ NGINX ДО ПОСЛЕДНЕЙ ВЕРСИИ
+# ==========================
+
+msg "🔄 Обновление Nginx до последней версии..."
+
+# Проверяем текущую версию
+current_version=$(nginx -v 2>&1 | grep -oP 'nginx/\K[0-9.]+' || echo "0")
+
+# Добавляем официальный репозиторий Nginx
+apt install -y curl gnupg2 ca-certificates lsb-release
+
+curl -fsSL https://nginx.org/keys/nginx_signing.key | gpg --dearmor | tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
+
+distro=$(lsb_release -cs)
+echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] http://nginx.org/packages/debian $distro nginx" | tee /etc/apt/sources.list.d/nginx.list
+
+# Обновляем и устанавливаем последнюю версию
+apt update
+apt install -y nginx
+
+# Проверяем новую версию
+new_version=$(nginx -v 2>&1 | grep -oP 'nginx/\K[0-9.]+')
+ok "Nginx обновлен до версии: $new_version"
+
+# ==========================
+
 while true; do
     msg "🌐 Введите домен:"
     read -r domain
@@ -77,7 +104,6 @@ case $port_choice in
             read -r custom_port
             
             if [[ "$custom_port" =~ ^[0-9]+$ ]] && [ "$custom_port" -ge 1024 ] && [ "$custom_port" -le 65535 ]; then
-                # Проверяем, не занят ли порт
                 if ss -tuln | grep -q ":${custom_port}\b"; then
                     echo -e "${RED}Порт ${custom_port} уже занят. Выберите другой.${RESET}"
                 else
@@ -166,23 +192,21 @@ if [ -f "$nginx_conf" ]; then
     ok "Создан бэкап: ${backup_name}"
 fi
 
-# Создаем новую конфигурацию
+# Создаем новую конфигурацию (НОВЫЙ СИНТАКСИС - без http2 в listen)
 cat > "$nginx_conf" <<EOF
 server {
-    # Слушаем и IPv4, и IPv6
-    listen 127.0.0.1:${nginx_port} ssl http2;
-    listen [::]:${nginx_port} ssl http2; 
+    listen 127.0.0.1:${nginx_port} ssl;
+    listen [::1]:${nginx_port} ssl;
+    http2 on;
     
     server_name ${domain};
 
-    # Ваши готовые сертификаты
     ssl_certificate /root/cert/${domain}/fullchain.pem;
     ssl_certificate_key /root/cert/${domain}/privkey.pem;
 
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_ciphers HIGH:!aNULL:!MD5;
 
-    # Простая заглушка
     location / {
         root /var/www/html;
         index index.html index.htm;
@@ -230,6 +254,7 @@ echo -e "${YELLOW}Домен:${RESET} ${GREEN}${domain}${RESET}"
 echo -e "${YELLOW}Шаблон:${RESET} ${GREEN}${template_name}${RESET}"
 echo -e "${YELLOW}Путь к файлам:${RESET} ${GREEN}${site_dir}${RESET}"
 echo -e "${YELLOW}Порт Nginx:${RESET} ${GREEN}${nginx_port}${RESET}"
+echo -e "${YELLOW}Версия Nginx:${RESET} ${GREEN}$(nginx -v 2>&1 | grep -oP 'nginx/\K[0-9.]+')${RESET}"
 
 echo
 echo -e "${CYAN}${BOLD}Настройки 3X-UI Reality${RESET}"
