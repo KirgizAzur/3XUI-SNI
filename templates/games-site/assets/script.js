@@ -7489,9 +7489,9 @@ const Header = () => {
         ] })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "hidden md:flex items-center space-x-4", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(NavLink, { href: "#games", children: "Games" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(NavLink, { href: "#how-it-works", children: "How It Works" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(NavLink, { href: "#testimonials", children: "Reviews" })
+        /* @__PURE__ */ jsxRuntimeExports.jsx(NavLink, { href: "#games", children: "Игры" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(NavLink, { href: "#how-it-works", children: "Как это работает" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(NavLink, { href: "#testimonials", children: "Отзывы" })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center space-x-3", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -7509,7 +7509,7 @@ const Header = () => {
             className: "flex items-center space-x-2 retro-button text-xs",
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(LogIn, { className: "h-4 w-4" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "hidden sm:inline", children: "Access Vault" })
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "hidden sm:inline", children: "Войти" })
             ]
           }
         )
@@ -7886,7 +7886,7 @@ const HowItWorks = () => {
         StepCard,
         {
           icon: /* @__PURE__ */ jsxRuntimeExports.jsx(Save, { className: "h-12 w-12 text-orange-400" }),
-          title: "Save States",
+          title: "Сохранения",
           description: "Сохраняйся в любой момент игры одним нажатием — больше никаких ограничений и кодов для сохранения",
           step: 3
         }
@@ -8040,7 +8040,7 @@ const Footer = () => {
           /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx(FooterLink, { href: "#games", children: "Игры" }) }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx(FooterLink, { href: "#how-it-works", children: "Как это работает" }) }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx(FooterLink, { href: "#testimonials", children: "Отзывы" }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx(FooterLink, { href: "#", children: "FAQ" }) })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx(FooterLink, { href: "#", children: "Вопросы и ответы" }) })
         ] })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
