@@ -133,6 +133,7 @@ curl -sI --resolve example.com:9443:127.0.0.1 https://example.com:9443/
 | `games-site` | ретро-игры RetroStream | RU | <img src="docs/screenshots/games-site.jpg" width="240"> |
 | `speedtest` | тест скорости SpeedCheck | RU | <img src="docs/screenshots/speedtest.jpg" width="240"> |
 | `youtube-captcha` | видеохостинг «Видеоландия» | RU | <img src="docs/screenshots/youtube-captcha.jpg" width="240"> |
+| `pixelport` | типографика PIXEL RUNNER | RU | <img src="docs/screenshots/PIXEL RUNNER.png" width="240"> |
 
 Список всегда можно получить командой:
 
@@ -219,7 +220,8 @@ tail -f /var/log/nginx/example.com-error.log
 │   ├── filecloud/              CloudStore (EN)
 │   ├── games-site/             RetroStream (RU)
 │   ├── speedtest/              SpeedCheck (RU)
-│   └── youtube-captcha/        «Видеоландия» (RU)
+│   ├── youtube-captcha/        «Видеоландия» (RU)
+│   └── pixelport/              PIXEL RUNNER (RU)
 └── docs/screenshots/           превью шаблонов
 ```
 
