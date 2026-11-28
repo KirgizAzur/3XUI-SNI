@@ -1,0 +1,1845 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PIXELPORT — пиксельное телевидение и ретро-игры · эфир 24/7</title>
+<meta name="description" content="PIXELPORT — прямые эфиры в 1440p60, пиксельные сериалы и ретро-игры. Поток идёт напрямую с узла во Франкфурте: без рекламы, без сжатия, без посредников.">
+<meta name="theme-color" content="#08070f">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:title" content="PIXELPORT — пиксельное телевидение">
+<meta property="og:description" content="Прямые эфиры в 1440p60 и ретро-игры. Origin: Франкфурт. Edge: Москва.">
+<meta property="og:image" content="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%2308070f'/%3E%3Cpath fill='%23ffd23f' d='M16 14h24v8h8v16h-8v12H16z'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%2308070f'/%3E%3Cpath fill='%23ffd23f' d='M4 3h5v2h1v3h-1v2H6v3H4z'/%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#08070f; --bg2:#0d0b1e; --panel:#131029; --panel2:#0e0c20;
+  --line:#2f2a5e; --line2:#4b4494;
+  --ink:#ece9ff; --muted:#a49dd6; --dim:#6f68a3;
+  --yellow:#ffd23f; --cyan:#35e6d0; --pink:#ff5d8f; --green:#8bff9e; --orange:#ff9f43; --red:#ff3b57;
+  --mono:"Cascadia Mono","JetBrains Mono","Consolas","DejaVu Sans Mono","Courier New",monospace;
+  --maxw:1180px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font:15px/1.65 var(--mono);
+  overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(124,110,235,.055) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(124,110,235,.055) 1px,transparent 1px);
+  background-size:32px 32px;
+  -webkit-mask-image:radial-gradient(circle at 50% 0,#000 0,transparent 78%);
+          mask-image:radial-gradient(circle at 50% 0,#000 0,transparent 78%);
+}
+body::after{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(900px 460px at 50% -8%,rgba(255,210,63,.10),transparent 70%),
+    radial-gradient(800px 500px at 85% 20%,rgba(53,230,208,.07),transparent 70%);
+}
+.crt{
+  position:fixed;inset:0;z-index:90;pointer-events:none;opacity:.5;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.42) 0 1px,rgba(0,0,0,0) 1px 4px);
+}
+.vig{
+  position:fixed;inset:0;z-index:89;pointer-events:none;
+  background:radial-gradient(125% 95% at 50% 42%,transparent 52%,rgba(0,0,0,.62) 100%);
+}
+::-webkit-scrollbar{width:12px;height:12px}
+::-webkit-scrollbar-track{background:#0a0818}
+::-webkit-scrollbar-thumb{background:#2f2a5e;border:3px solid #0a0818}
+::-webkit-scrollbar-thumb:hover{background:var(--line2)}
+::selection{background:var(--yellow);color:#0a0812}
+
+.px{display:inline-block;max-width:100%;vertical-align:bottom;letter-spacing:0}
+canvas.px{image-rendering:pixelated;image-rendering:crisp-edges;filter:drop-shadow(4px 4px 0 rgba(0,0,0,.65))}
+h1,h2,h3,h4,p,ul,ol{margin:0}
+a{color:inherit}
+.dot{
+  width:8px;height:8px;background:var(--red);display:inline-block;flex:0 0 auto;
+  box-shadow:0 0 0 2px rgba(255,59,87,.18);
+  animation:blink 1.1s steps(1,end) infinite;
+}
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:.18}}
+
+.hdr{position:sticky;top:0;z-index:60;background:rgba(8,7,15,.9);border-bottom:3px solid var(--line);backdrop-filter:blur(8px)}
+.hdr-in{
+  max-width:var(--maxw);margin:0 auto;padding:11px 20px;
+  display:flex;align-items:center;gap:22px;
+}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;flex:0 0 auto}
+.brand-mark{width:26px;height:26px;shape-rendering:crispEdges;display:block;filter:drop-shadow(2px 2px 0 #000)}
+.nav{display:flex;gap:4px;flex:1 1 auto;min-width:0}
+.nav a{
+  text-decoration:none;font-size:12px;letter-spacing:.1em;padding:6px 10px;
+  color:var(--muted);border:2px solid transparent;white-space:nowrap;
+}
+.nav a:hover{color:#0a0812;background:var(--yellow);border-color:#0a0812}
+.live-chip{
+  display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.1em;
+  border:2px solid var(--line);padding:5px 9px;color:var(--muted);white-space:nowrap;
+}
+.live-chip b{color:var(--ink);font-weight:400;font-variant-numeric:tabular-nums}
+.hdr-traffic{
+  font-size:12px;letter-spacing:.06em;color:var(--yellow);white-space:nowrap;
+  border-left:2px solid var(--line);padding-left:16px;font-variant-numeric:tabular-nums;
+}
+.hdr-traffic span{color:var(--yellow)}
+
+.ticker{
+  overflow:hidden;border-bottom:3px solid var(--line);background:#0a0818;
+  font-size:11px;letter-spacing:.08em;color:var(--dim);
+}
+.ticker-in{display:flex;width:max-content;animation:tick 52s linear infinite}
+.ticker-in span{padding:5px 0;white-space:nowrap}
+.ticker-in b{color:var(--cyan);font-weight:400}
+.ticker-in i{color:var(--yellow);font-style:normal}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+main{position:relative;z-index:1}
+.hero{
+  max-width:var(--maxw);margin:0 auto;padding:56px 20px 34px;
+  display:grid;grid-template-columns:1.02fr .98fr;gap:44px;align-items:center;
+}
+.eyebrow{
+  display:flex;align-items:center;gap:9px;font-size:11px;letter-spacing:.16em;
+  color:var(--muted);margin-bottom:20px;
+}
+.hero h1{line-height:1;margin-bottom:20px}
+.lead{font-size:15.5px;color:var(--muted);max-width:46ch;margin-bottom:26px}
+.lead b{color:var(--ink);font-weight:400;border-bottom:2px solid rgba(255,210,63,.45)}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:26px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;list-style:none;padding:0}
+.chips li{
+  font-size:10.5px;letter-spacing:.1em;color:var(--dim);
+  border:2px solid var(--line);padding:4px 8px;text-transform:uppercase;
+}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  padding:11px 17px;border:3px solid var(--line2);background:#171334;color:var(--ink);
+  font:inherit;font-size:12px;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;
+  box-shadow:5px 5px 0 #05040c;cursor:pointer;
+  transition:transform .05s steps(2,end),box-shadow .05s steps(2,end),background .1s;
+}
+.btn:hover{border-color:var(--cyan);background:#1d1840;color:#fff}
+.btn:active{transform:translate(5px,5px);box-shadow:0 0 0 #05040c}
+.btn:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+.btn-primary{background:var(--yellow);color:#120e06;border-color:#120e06;box-shadow:5px 5px 0 #6f5300}
+.btn-primary:hover{background:#ffe066;color:#120e06;border-color:#120e06}
+.btn-sm{padding:7px 11px;font-size:10.5px;box-shadow:3px 3px 0 #05040c}
+.btn-sm:active{transform:translate(3px,3px)}
+
+.hero-screen{position:relative}
+.screen{
+  position:relative;border:4px solid #3a3570;background:#05030f;overflow:hidden;
+  box-shadow:0 0 0 4px #0b0918,10px 10px 0 rgba(0,0,0,.55),0 0 70px rgba(53,230,208,.10);
+}
+.screen-cv{display:block;width:100%;height:auto;aspect-ratio:16/9;image-rendering:pixelated;background:#05030f}
+.scr-glare{
+  position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(150deg,rgba(255,255,255,.06),transparent 38%);
+}
+.scr-hud{
+  position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;
+  padding:9px 11px;font-size:10px;letter-spacing:.12em;pointer-events:none;
+  background:linear-gradient(180deg,rgba(4,3,12,.72),transparent);
+}
+.scr-live{display:flex;align-items:center;gap:7px;color:#fff}
+.scr-meta{color:var(--muted)}
+.scr-meta b{color:var(--cyan);font-weight:400}
+.scr-meta i{font-style:normal;color:var(--ink)}
+.scr-ctrl{
+  position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;gap:10px;
+  padding:9px 10px;background:linear-gradient(0deg,rgba(4,3,12,.92),rgba(4,3,12,.5) 60%,transparent);
+  opacity:0;pointer-events:none;transition:opacity .25s ease;
+}
+.screen:hover .scr-ctrl,.screen:focus-within .scr-ctrl,.screen.paused .scr-ctrl{opacity:1;pointer-events:auto}
+.screen{cursor:pointer}
+@media (hover:none){.scr-ctrl{opacity:1;pointer-events:auto}}
+.cbtn{
+  background:none;border:2px solid rgba(236,233,255,.35);color:var(--ink);
+  font:inherit;font-size:10px;letter-spacing:.08em;padding:3px 7px;cursor:pointer;line-height:1.2;
+  min-width:28px;
+}
+.cbtn:hover{border-color:var(--yellow);color:var(--yellow)}
+.cbtn:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}
+.bar{flex:1 1 auto;height:8px;background:rgba(236,233,255,.16);position:relative;overflow:hidden}
+.bar i{position:absolute;inset:0 auto 0 0;width:38%;background:var(--red)}
+.tc{font-size:10px;color:var(--muted);font-variant-numeric:tabular-nums;letter-spacing:.06em}
+.screen-cap{
+  display:flex;justify-content:space-between;gap:12px;align-items:baseline;
+  margin-top:14px;font-size:11px;letter-spacing:.06em;color:var(--dim);flex-wrap:wrap;
+}
+.screen-cap b{color:var(--ink);font-weight:400}
+.screen-cap em{color:var(--pink);font-style:normal}
+
+.board{
+  max-width:var(--maxw);margin:6px auto 0;padding:0 20px;
+}
+.board-in{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border:3px solid var(--line);background:linear-gradient(180deg,#100e24,#0b0918);
+}
+.cell{padding:15px 18px;border-right:3px solid var(--line);min-width:0}
+.cell:last-child{border-right:0}
+.cell .lbl{display:block;font-size:9.5px;letter-spacing:.14em;color:var(--dim);margin-bottom:7px}
+.cell .val{font-size:22px;letter-spacing:.02em;color:var(--yellow);font-variant-numeric:tabular-nums;line-height:1.1}
+.cell .val small{font-size:11px;color:var(--dim);letter-spacing:.08em}
+.cell .val.cy{color:var(--cyan)}
+.cell .val.gr{color:var(--green)}
+
+.sec{max-width:var(--maxw);margin:0 auto;padding:64px 20px 8px;scroll-margin-top:90px}
+.sec-h{display:flex;align-items:center;gap:14px;margin-bottom:26px;flex-wrap:wrap}
+.sec-num{
+  font-size:11px;letter-spacing:.1em;color:var(--dim);border:2px solid var(--line);
+  padding:3px 7px;flex:0 0 auto;
+}
+.sec-sub{font-size:11px;letter-spacing:.08em;color:var(--dim);text-transform:uppercase;flex:0 0 auto}
+.sec-rule{
+  flex:1 1 40px;height:2px;min-width:24px;
+  background:repeating-linear-gradient(90deg,var(--line) 0 6px,transparent 6px 12px);
+}
+.panel{
+  position:relative;border:3px solid var(--line);padding:20px;
+  background:linear-gradient(180deg,#141130,#0f0d22);
+}
+.panel::after{content:"";position:absolute;inset:3px;border:1px solid rgba(124,110,235,.14);pointer-events:none}
+.grid-2{display:grid;grid-template-columns:1.45fr 1fr;gap:18px;align-items:stretch}
+.grid-2>*,.net-grid>*,.chat>*,.cards>*,.hero>*,.board-in>*,.ftr-in>*{min-width:0}
+.tbl-wrap{overflow-x:auto;margin:0 -4px;padding:0 4px}
+.lbl{font-size:10px;letter-spacing:.14em;color:var(--dim);text-transform:uppercase}
+
+/* traffic */
+.tp-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:16px;flex-wrap:wrap}
+.big{font-size:34px;line-height:1;color:var(--cyan);font-variant-numeric:tabular-nums;letter-spacing:.01em}
+.big small{font-size:12px;color:var(--dim);letter-spacing:.1em;margin-left:4px}
+.tp-status{
+  display:flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.12em;color:var(--muted);
+  border:2px solid var(--line);padding:5px 9px;white-space:nowrap;
+}
+.tp-status.paused{color:var(--dim)}
+.tp-status.paused .dot{background:var(--dim);animation:none;opacity:.4}
+#chart{display:block;width:100%;height:130px;image-rendering:pixelated}
+.tp-legend{display:flex;justify-content:space-between;font-size:9.5px;letter-spacing:.1em;color:var(--dim);margin:2px 0 16px;gap:10px;flex-wrap:wrap}
+.tp-stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:3px solid var(--line);padding-top:14px}
+.tp-stats div{min-width:0;padding-right:10px}
+.tp-stats b{display:block;font-size:16px;font-weight:400;font-variant-numeric:tabular-nums;color:var(--ink);margin-top:4px;white-space:nowrap}
+.tp-stats b.sm{font-size:14px;color:var(--pink)}
+
+.why h3{
+  font-size:11px;letter-spacing:.16em;color:var(--yellow);margin-bottom:16px;
+  display:flex;align-items:center;gap:10px;
+}
+.why h3::after{content:"";flex:1;height:2px;background:repeating-linear-gradient(90deg,var(--line) 0 5px,transparent 5px 10px)}
+.why ol{list-style:none;padding:0;counter-reset:w;display:flex;flex-direction:column;gap:14px}
+.why li{counter-increment:w;position:relative;padding-left:34px;font-size:13px;color:var(--muted);line-height:1.55}
+.why li::before{
+  content:counter(w);position:absolute;left:0;top:1px;
+  width:22px;height:22px;display:grid;place-items:center;
+  font-size:11px;color:var(--cyan);border:2px solid var(--line);background:#0b0918;
+}
+.why li b{color:var(--ink);font-weight:400}
+.why-note{
+  margin-top:18px;padding:12px 14px;border-left:4px solid var(--yellow);background:rgba(255,210,63,.055);
+  font-size:12px;color:var(--muted);line-height:1.55;
+}
+.why-note b{color:var(--yellow);font-weight:400}
+
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{
+  display:flex;flex-direction:column;border:3px solid var(--line);background:#100e24;
+  transition:border-color .12s,transform .12s;
+}
+.card:hover{border-color:var(--line2);transform:translateY(-3px)}
+.card-top{position:relative;background:#07060f;border-bottom:3px solid var(--line);overflow:hidden}
+.card-top canvas{display:block;width:100%;height:auto;aspect-ratio:16/10;image-rendering:pixelated}
+.size-tag{
+  position:absolute;right:6px;bottom:6px;font-size:9px;letter-spacing:.1em;
+  background:rgba(4,3,12,.85);color:var(--cyan);padding:2px 5px;border:1px solid rgba(53,230,208,.3);
+}
+.card-body{padding:13px 14px 14px;display:flex;flex-direction:column;gap:6px;flex:1}
+.card-title{font-size:13px;letter-spacing:.08em;color:var(--ink);font-weight:400}
+.card-meta{font-size:10.5px;color:var(--dim);letter-spacing:.05em}
+.card-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:auto;padding-top:8px}
+.rating{font-size:10px;color:var(--yellow);letter-spacing:.14em}
+.dl-bar{height:7px;background:#0a0818;border:2px solid var(--line);display:none;margin-top:8px}
+.dl-bar.on{display:block}
+.dl-bar i{display:block;height:100%;width:0;background:repeat-x;background-image:repeating-linear-gradient(90deg,var(--green) 0 7px,transparent 7px 10px);background-color:rgba(139,255,158,.2);transition:width .18s linear}
+
+.net-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:stretch}
+.route-cv{display:block;width:100%;height:auto;aspect-ratio:720/268;image-rendering:pixelated;background:#06040e;border:3px solid var(--line)}
+.nodes{width:100%;border-collapse:collapse;font-size:11.5px;letter-spacing:.03em}
+.nodes th{
+  text-align:left;font-weight:400;font-size:9.5px;letter-spacing:.12em;color:var(--dim);
+  padding:8px 10px;border-bottom:3px solid var(--line);white-space:nowrap;
+}
+.nodes td{padding:9px 10px;border-bottom:1px solid rgba(47,42,94,.55);color:var(--muted);white-space:nowrap}
+.nodes tr:hover td{background:rgba(124,110,235,.06);color:var(--ink)}
+.nodes td.name{color:var(--ink)}
+.nodes td.role{color:var(--dim);font-size:10px;letter-spacing:.1em;text-transform:uppercase}
+.load{display:inline-block;width:74px;height:9px;vertical-align:middle;background:repeating-linear-gradient(90deg,#241f4a 0 5px,transparent 5px 8px);margin-right:8px}
+.load i{display:block;height:100%;background:repeating-linear-gradient(90deg,var(--cyan) 0 5px,transparent 5px 8px)}
+.load.warn i{background:repeating-linear-gradient(90deg,var(--yellow) 0 5px,transparent 5px 8px)}
+.node-legend{display:flex;gap:14px;font-size:9.5px;letter-spacing:.1em;color:var(--dim);margin-top:14px;flex-wrap:wrap}
+.node-legend span{display:flex;align-items:center;gap:6px}
+.node-legend em{width:9px;height:9px;display:inline-block;font-style:normal}
+
+.chat{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:start}
+.msgs{list-style:none;padding:0;display:flex;flex-direction:column;gap:14px}
+.msg{display:flex;gap:12px;align-items:flex-start}
+.av{width:30px;height:30px;image-rendering:pixelated;border:2px solid var(--line);flex:0 0 auto;background:#0b0918}
+.msg b{font-size:11.5px;color:var(--cyan);font-weight:400;letter-spacing:.04em}
+.msg time{font-size:9.5px;color:var(--dim);margin-left:8px;letter-spacing:.08em}
+.msg p{font-size:12.5px;color:var(--muted);line-height:1.55;margin-top:3px}
+.chat-side h4{font-size:10px;letter-spacing:.14em;color:var(--yellow);margin-bottom:12px}
+.chat-side p{font-size:12px;color:var(--muted);margin-bottom:14px}
+.fake-input{
+  display:flex;gap:8px;border:2px solid var(--line);padding:7px 9px;background:#0a0818;
+  font-size:11.5px;color:var(--dim);align-items:center;
+}
+.fake-input span{flex:1}
+
+.ftr{max-width:var(--maxw);margin:64px auto 0;padding:34px 20px 40px;border-top:3px solid var(--line);position:relative;z-index:1}
+.ftr-in{display:grid;grid-template-columns:1.4fr .8fr 1fr .9fr;gap:26px}
+.ftr-brand{display:flex;flex-direction:column;gap:10px}
+.ftr-brand .b{display:flex;align-items:center;gap:9px}
+.ftr-brand p{font-size:11.5px;color:var(--dim);line-height:1.6;max-width:30ch}
+.ftr-col h4{font-size:9.5px;letter-spacing:.16em;color:var(--dim);margin-bottom:12px;font-weight:400}
+.ftr-col ul{list-style:none;padding:0;display:flex;flex-direction:column;gap:7px}
+.ftr-col a,.ftr-col li{font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:.04em}
+.ftr-col a:hover{color:var(--yellow)}
+.ftr-bot{
+  display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  margin-top:30px;padding-top:16px;border-top:2px solid rgba(47,42,94,.6);
+  font-size:10px;color:var(--dim);letter-spacing:.04em;
+}
+.ftr-bot a{text-decoration:none}
+.ops-link{color:#332e60;text-decoration:none;font-size:12px}
+.ops-link:hover{color:var(--yellow)}
+
+.ops{
+  position:fixed;right:16px;bottom:16px;z-index:100;width:min(392px,calc(100vw - 32px));
+  border:3px solid var(--yellow);background:#0b0918;padding:14px;display:none;
+  box-shadow:10px 10px 0 rgba(0,0,0,.6);
+}
+.ops.on{display:block}
+.ops h4{font-size:10px;letter-spacing:.16em;color:var(--yellow);margin-bottom:4px;display:flex;justify-content:space-between;align-items:center}
+.ops .hint{font-size:10px;color:var(--dim);margin-bottom:12px;line-height:1.5}
+.ops label{display:block;font-size:9.5px;letter-spacing:.1em;color:var(--dim);margin:9px 0 4px;text-transform:uppercase}
+.ops input[type=text],.ops input[type=range]{
+  width:100%;background:#07060f;border:2px solid var(--line);color:var(--ink);
+  font:inherit;font-size:11px;padding:6px 8px;
+}
+.ops input[type=range]{padding:0;height:24px;accent-color:var(--yellow)}
+.ops .row{display:flex;gap:8px;margin-top:12px}
+.ops .row .btn{flex:1;padding:8px 10px;font-size:10px;box-shadow:3px 3px 0 #05040c}
+.ops .stat{display:flex;justify-content:space-between;font-size:10.5px;color:var(--muted);padding:3px 0;border-bottom:1px solid rgba(47,42,94,.5)}
+.ops .stat b{font-weight:400;color:var(--cyan);font-variant-numeric:tabular-nums}
+.ops .x{background:none;border:2px solid var(--line);color:var(--muted);cursor:pointer;font:inherit;font-size:10px;padding:1px 6px}
+
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
+  html{scroll-behavior:auto}
+}
+
+@media (max-width:1000px){
+  .hero{grid-template-columns:1fr;gap:32px;padding-top:38px}
+  .hero-screen{order:2}
+  .grid-2{grid-template-columns:1fr}
+  .cards{grid-template-columns:repeat(2,1fr)}
+  .net-grid{grid-template-columns:1fr}
+  .chat{grid-template-columns:1fr}
+  .ftr-in{grid-template-columns:1fr 1fr}
+  .nav{display:none}
+  .hdr-traffic{display:none}
+}
+@media (max-width:640px){
+  .scr-rate{display:none}
+  .board-in{grid-template-columns:1fr 1fr}
+  .cell:nth-child(2){border-right:0}
+  .cell:nth-child(1),.cell:nth-child(2){border-bottom:3px solid var(--line)}
+  .cards{grid-template-columns:1fr}
+  .ftr-in{grid-template-columns:1fr}
+  .sec{padding-top:44px}
+  .big{font-size:26px}
+  .tp-stats{grid-template-columns:1fr 1fr;gap:12px 0}
+  .cell .val{font-size:18px}
+  .hero{padding-top:30px}
+  .screen-cap{font-size:10px}
+}
+@media (max-width:560px){
+  .live-chip b{display:none}
+  .hdr-in{gap:12px}
+}
+</style>
+</head>
+<body id="top">
+<div class="crt" aria-hidden="true"></div>
+<div class="vig" aria-hidden="true"></div>
+
+<header class="hdr">
+  <div class="hdr-in">
+    <a class="brand" href="#top" aria-label="PIXELPORT — на главную">
+      <svg class="brand-mark" viewBox="0 0 17 17" aria-hidden="true">
+        <rect width="17" height="17" fill="#0b0918"/>
+        <path fill="#ffd23f" d="M4 3h7v2h2v6h-2v2H7v3H4z"/>
+        <path fill="#0b0918" d="M7 5h3v2H7z"/>
+        <path fill="#35e6d0" d="M13 13h2v2h-2z"/>
+      </svg>
+      <span class="px" data-px="size:13;scale:2;fixed:1;color:#ffd23f;track:1">PIXELPORT</span>
+    </a>
+    <nav class="nav">
+      <a href="#efir">ЭФИР</a>
+      <a href="#traffic">ТРАФИК</a>
+      <a href="#catalog">КАТАЛОГ</a>
+      <a href="#net">СЕТЬ</a>
+      <a href="#chat">ЧАТ</a>
+    </nav>
+    <div class="live-chip"><i class="dot"></i> LIVE <b id="hdrViewers">12 483</b></div>
+    <div class="hdr-traffic"><span id="hdrTraffic">0.00</span> ГБ</div>
+  </div>
+</header>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-in" id="ticker"></div>
+</div>
+
+<main>
+  <section class="hero" id="efir">
+    <div class="hero-copy">
+      <p class="eyebrow"><i class="dot"></i> В ЭФИРЕ 24/7 · КАНАЛ 07 · 1440P60</p>
+      <h1 class="px" data-px="size:38;scale:3;fit:width;wrap:1;color:#ffffff;track:2">СМОТРИ В 8 БИТ</h1>
+      <p class="lead">Пиксельные сериалы, ретро-турниры и прямые эфиры без пересжатия. Поток идёт <b>напрямую с нашего узла во Франкфурте</b> — без рекламы, без посредников и без «оптимизаторов» трафика.</p>
+      <div class="cta">
+        <a class="btn btn-primary" href="#traffic">▶ СМОТРЕТЬ ЭФИР</a>
+        <a class="btn" href="#catalog">СКАЧАТЬ ПАКЕТ</a>
+      </div>
+      <ul class="chips">
+        <li>1440p60</li><li>до 12 ГБ/час</li><li>0 рекламы</li><li>без регистрации</li>
+      </ul>
+    </div>
+
+    <div class="hero-screen">
+      <div class="screen" id="screen">
+        <canvas id="runner" class="screen-cv" width="192" height="108"></canvas>
+        <div class="scr-glare"></div>
+        <div class="scr-hud">
+          <div class="scr-live"><i class="dot"></i>LIVE</div>
+          <div class="scr-meta"><b id="scrQuality">1440p60</b><span class="scr-rate"> · <i id="scrRate">9.8</i> Мбит/с</span></div>
+        </div>
+        <div class="scr-ctrl">
+          <button class="cbtn" id="btnPlay" aria-label="Пауза" title="Пауза / продолжить">❚❚</button>
+          <div class="bar"><i id="scrBar"></i></div>
+          <span class="tc" id="scrTc">01:24:07</span>
+          <button class="cbtn" id="btnQ" title="Качество">1440p</button>
+          <button class="cbtn" id="btnFs" title="Во весь экран" aria-label="Во весь экран">⛶</button>
+        </div>
+      </div>
+      <div class="screen-cap">
+        <span><b>PIXEL RUNNER</b> · ночная смена</span>
+        <span><em>●</em> <span id="capViewers">2 148</span> смотрят · канал 07</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="board">
+    <div class="board-in">
+      <div class="cell"><span class="lbl">СМОТРЯТ СЕЙЧАС</span><span class="val" id="bViewers">12 483</span></div>
+      <div class="cell"><span class="lbl">ТРАФИК СЕССИИ</span><span class="val gr" id="bTraffic">0.00 <small>ГБ</small></span></div>
+      <div class="cell"><span class="lbl">БИТРЕЙТ</span><span class="val cy" id="bRate">9.8 <small>Мбит/с</small></span></div>
+      <div class="cell"><span class="lbl">ЗАДЕРЖКА FRA</span><span class="val" id="bPing">28 <small>мс</small></span></div>
+    </div>
+  </div>
+
+  <section class="sec" id="traffic">
+    <div class="sec-h">
+      <span class="sec-num">01</span>
+      <h2 class="px" data-px="size:21;scale:3;color:#35e6d0">TRAFFIC</h2>
+      <span class="sec-sub">сколько ест эфир</span>
+      <span class="sec-rule"></span>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="tp-head">
+          <div>
+            <div class="lbl">ТЕКУЩИЙ ПОТОК</div>
+            <div class="big" id="tRate">9.8<small>Мбит/с</small></div>
+          </div>
+          <div class="tp-status" id="tStatus"><i class="dot"></i><span>ПОТОК АКТИВЕН</span></div>
+        </div>
+        <canvas id="chart" width="700" height="130"></canvas>
+        <div class="tp-legend">
+          <span>60 СЕКУНД · ВХОДЯЩИЙ ПОТОК</span>
+          <span id="tPeak">ПИК 11.4</span>
+        </div>
+        <div class="tp-stats">
+          <div><span class="lbl">ПРИНЯТО</span><b id="sIn">0 Б</b></div>
+          <div><span class="lbl">ОТДАНО</span><b id="sOut" class="sm">0 Б</b></div>
+          <div><span class="lbl">ПИК</span><b id="sPeak">0</b></div>
+          <div><span class="lbl">СРЕДНЕЕ</span><b id="sAvg">0</b></div>
+        </div>
+      </div>
+
+      <div class="panel why">
+        <h3>ПОЧЕМУ СТОЛЬКО?</h3>
+        <ol>
+          <li><b>1440p60 без пересжатия.</b> Мы не транскодируем на лету: мастер-поток уходит зрителю как есть. Один час эфира — до 12 ГБ.</li>
+          <li><b>Пакеты лежат на origin.</b> Демо-паки и патчи кэшируются на московском узле, но при промахе кэша тянутся целиком из Франкфурта: гигабайты за минуты.</li>
+          <li><b>Обратный канал тоже полный.</b> Чат, телеметрия турниров и синхронизация сохранений идут с клиента в дата-центр — восходящий поток мы не экономим.</li>
+        </ol>
+        <div class="why-note">Средний зритель за вечер — <b>6–14 ГБ</b>. Так работает видео без компрессии: трафик честный, картинка чистая.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="catalog">
+    <div class="sec-h">
+      <span class="sec-num">02</span>
+      <h2 class="px" data-px="size:21;scale:3;color:#ffd23f">CATALOG</h2>
+      <span class="sec-sub">паки и демо-сборки</span>
+      <span class="sec-rule"></span>
+    </div>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <section class="sec" id="net">
+    <div class="sec-h">
+      <span class="sec-num">03</span>
+      <h2 class="px" data-px="size:21;scale:3;color:#ff5d8f">NETWORK</h2>
+      <span class="sec-sub">маршрут и узлы</span>
+      <span class="sec-rule"></span>
+    </div>
+    <div class="net-grid">
+      <div>
+        <canvas id="route" class="route-cv" width="720" height="268"></canvas>
+        <div class="node-legend">
+          <span><em style="background:#ffd23f"></em> пакеты потока</span>
+          <span><em style="background:#35e6d0"></em> edge-кэш</span>
+          <span><em style="background:#ff5d8f"></em> origin</span>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="tbl-wrap">
+        <table class="nodes">
+          <thead><tr><th>УЗЕЛ</th><th>ЛОКАЦИЯ</th><th>РОЛЬ</th><th>ЗАГРУЗКА</th><th>RTT</th></tr></thead>
+          <tbody>
+            <tr><td class="name">FRA-01</td><td>Франкфурт-на-Майне, DE</td><td class="role">origin</td><td><span class="load"><i style="width:41%"></i></span>41%</td><td>—</td></tr>
+            <tr><td class="name">FRA-02</td><td>Франкфурт-на-Майне, DE</td><td class="role">origin</td><td><span class="load"><i style="width:37%"></i></span>37%</td><td>—</td></tr>
+            <tr><td class="name">MSK-01</td><td>Москва, RU</td><td class="role">edge</td><td><span class="load warn"><i style="width:63%"></i></span>63%</td><td>28 мс</td></tr>
+            <tr><td class="name">MSK-02</td><td>Москва, RU</td><td class="role">edge</td><td><span class="load warn"><i style="width:58%"></i></span>58%</td><td>31 мс</td></tr>
+            <tr><td class="name">AMS-01</td><td>Амстердам, NL</td><td class="role">backup</td><td><span class="load"><i style="width:12%"></i></span>12%</td><td>41 мс</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="node-legend" style="margin-top:16px">
+          <span>2 004 км маршрута</span>
+          <span>·</span>
+          <span>10 Гбит/с на узел</span>
+          <span>·</span>
+          <span>99,98% аптайм</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="chat">
+    <div class="sec-h">
+      <span class="sec-num">04</span>
+      <h2 class="px" data-px="size:21;scale:3;color:#8bff9e">CHAT</h2>
+      <span class="sec-sub">эфирный канал</span>
+      <span class="sec-rule"></span>
+    </div>
+    <div class="chat">
+      <ul class="msgs" id="msgs"></ul>
+      <div class="panel chat-side">
+        <h4>ПРАВИЛА КАНАЛА</h4>
+        <p>Без спойлеров до титров. Без политики — для этого есть другие каналы. Уважайте 8 бит.</p>
+        <h4>ПОДПИСКА НА ЭФИР</h4>
+        <p>Регистрация не нужна: эфир открыт, чат читается, пакеты качаются без аккаунта.</p>
+        <div class="fake-input"><span>написать в чат…</span><b style="color:#ffd23f">↵</b></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="ftr">
+  <div class="ftr-in">
+    <div class="ftr-brand">
+      <div class="b">
+        <svg class="brand-mark" viewBox="0 0 17 17" aria-hidden="true">
+          <rect width="17" height="17" fill="#0b0918"/>
+          <path fill="#ffd23f" d="M4 3h7v2h2v6h-2v2H7v3H4z"/>
+          <path fill="#0b0918" d="M7 5h3v2H7z"/>
+        </svg>
+        <span class="px" data-px="size:13;scale:2;fixed:1;color:#ffd23f;track:1">PIXELPORT</span>
+      </div>
+      <p>Пиксельное телевидение и ретро-игры. Эфир 24/7 с 1992 года. Origin: Франкфурт-на-Майне.</p>
+    </div>
+    <div class="ftr-col">
+      <h4>ЭФИР</h4>
+      <ul>
+        <li><a href="#efir">Канал 07 · LIVE</a></li>
+        <li><a href="#catalog">Каталог паков</a></li>
+        <li><a href="#traffic">Статистика потока</a></li>
+        <li><a href="#net">Статус узлов</a></li>
+      </ul>
+    </div>
+    <div class="ftr-col">
+      <h4>СЕРВЕРЫ</h4>
+      <ul>
+        <li>FRA-01 · Франкфурт-на-Майне</li>
+        <li>FRA-02 · Франкфурт-на-Майне</li>
+        <li>MSK-01 · Москва</li>
+        <li>MSK-02 · Москва</li>
+      </ul>
+    </div>
+    <div class="ftr-col">
+      <h4>ДОКУМЕНТЫ</h4>
+      <ul>
+        <li><a href="#">Impressum</a></li>
+        <li><a href="#">Datenschutz</a></li>
+        <li><a href="#">Nutzungsbedingungen</a></li>
+        <li><a href="#ops" class="ops-link" id="opsLink" title="Служебная консоль">¬</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="ftr-bot">
+    <span>© 2026 PIXELPORT GmbH (i.G.) · Hanauer Landstraße 12, 60314 Frankfurt am Main</span>
+    <span>Сделано на 8 битах · <span id="ftrTraffic">0.00 ГБ</span> за сессию</span>
+  </div>
+</footer>
+
+<div class="ops" id="ops" role="dialog" aria-label="Служебная консоль">
+  <h4>СЛУЖЕБНАЯ КОНСОЛЬ <button class="x" id="opsClose" aria-label="Закрыть">✕</button></h4>
+  <p class="hint">Скрытая панель оператора. Открывается через <b>#ops</b> или клавишей <b>~</b>. Видна только вам — в публичной вёрстке её нет.</p>
+  <label>Режим</label>
+  <div class="row" style="margin-top:0">
+    <button class="btn btn-sm" id="mDemo">ДЕМО</button>
+    <button class="btn btn-sm" id="mLive">СЕТЬ</button>
+  </div>
+  <label>URL потока (chunked, без CORS-заголовков не выйдет)</label>
+  <input type="text" id="cfgUrl" placeholder="https://origin.example/stream/8bit.bin" spellcheck="false">
+  <label>Целевой битрейт: <b id="cfgRateLbl">9.8</b> Мбит/с</label>
+  <input type="range" id="cfgRate" min="500" max="40000" step="100" value="9800">
+  <div class="row">
+    <button class="btn btn-primary" id="opsStart">СТАРТ</button>
+    <button class="btn" id="opsStop">СТОП</button>
+  </div>
+  <div style="margin-top:12px">
+    <div class="stat"><span>режим</span><b id="opsMode">ДЕМО</b></div>
+    <div class="stat"><span>факт. скорость</span><b id="opsRate">—</b></div>
+    <div class="stat"><span>скачано</span><b id="opsIn">0 Б</b></div>
+    <div class="stat"><span>ошибок</span><b id="opsErr">0</b></div>
+  </div>
+</div>
+
+<noscript><div style="position:fixed;inset:0;background:#08070f;color:#ece9ff;z-index:200;padding:40px;font-family:monospace">Для просмотра эфира включите JavaScript.</div></noscript>
+
+<script>
+
+(function () {
+'use strict';
+
+var $ = function (s, r) { return (r || document).querySelector(s); };
+var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+var clamp = function (v, a, b) { return v < a ? a : (v > b ? b : v); };
+var now = function () { return performance.now(); };
+var sleep = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
+function fmtBytes(n) {
+  n = Math.max(0, n);
+  if (n < 1024) return Math.round(n) + ' Б';
+  if (n < 1048576) return (n / 1024).toFixed(1).replace('.', ',') + ' КБ';
+  if (n < 1073741824) return (n / 1048576).toFixed(1).replace('.', ',') + ' МБ';
+  return (n / 1073741824).toFixed(2).replace('.', ',') + ' ГБ';
+}
+function fmtGB(n) { return (n / 1073741824).toFixed(2).replace('.', ','); }
+function fmtMb(kbps) { return (kbps / 1000).toFixed(1).replace('.', ','); }
+function pad2(n) { return (n < 10 ? '0' : '') + n; }
+function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]; }); }
+function mulberry(seed) {
+  return function () {
+    seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+    var t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function makeLayer(w, h, fn) {
+  var c = document.createElement('canvas'); c.width = w; c.height = h;
+  var g = c.getContext('2d'); g.imageSmoothingEnabled = false;
+  fn(g, w, h); return c;
+}
+
+var measureCtx = document.createElement('canvas').getContext('2d');
+
+function parseOpt(str) {
+  var o = {};
+  (str || '').split(';').forEach(function (p) {
+    var i = p.indexOf(':');
+    if (i > 0) o[p.slice(0, i).trim()] = p.slice(i + 1).trim();
+  });
+  return o;
+}
+
+function buildPxLines(lines, o, family, size) {
+  var weight = o.weight || 700;
+  var track = o.track !== undefined ? parseFloat(o.track) : 1;
+  var font = weight + ' ' + size + 'px ' + family;
+  measureCtx.font = font;
+  var i, j, chars, widths = [], maxW = 0, w;
+  for (i = 0; i < lines.length; i++) {
+    w = 0;
+    chars = lines[i].split('');
+    for (j = 0; j < chars.length; j++) w += measureCtx.measureText(chars[j]).width + track;
+    widths.push(w);
+    if (w > maxW) maxW = w;
+  }
+  var lineH = Math.ceil(size * 1.14);
+  var cvW = Math.ceil(maxW) + 4;
+  var cvH = lineH * lines.length + Math.ceil(size * 0.35) + 2;
+
+  var cv = document.createElement('canvas');
+  cv.width = Math.max(4, cvW); cv.height = Math.max(4, cvH);
+  var g = cv.getContext('2d', { willReadFrequently: true });
+  g.font = font; g.textBaseline = 'alphabetic'; g.fillStyle = '#fff';
+  for (i = 0; i < lines.length; i++) {
+    var x = 2, base = i * lineH + Math.round(size * 1.1) + 1;
+    chars = lines[i].split('');
+    for (j = 0; j < chars.length; j++) {
+      g.fillText(chars[j], x, base);
+      x += measureCtx.measureText(chars[j]).width + track;
+    }
+  }
+  var img = g.getImageData(0, 0, cv.width, cv.height), d = img.data;
+  for (i = 3; i < d.length; i += 4) d[i] = d[i] > 100 ? 255 : 0;
+  g.putImageData(img, 0, 0);
+  g.globalCompositeOperation = 'source-in';
+  g.fillStyle = o.color || '#ffffff';
+  g.fillRect(0, 0, cv.width, cv.height);
+  return cv;
+}
+
+function fitPx(lines, o, family, avail, desired) {
+  var size = parseFloat(o.size) || 20;
+  var cv = buildPxLines(lines, o, family, size);
+  if (o.fixed !== '1') {
+    var guard = 0;
+    while (cv.width * desired > avail - 2 && size > 9 && guard++ < 90) {
+      size = Math.max(9, size - 0.5);
+      cv = buildPxLines(lines, o, family, size);
+    }
+    desired = Math.max(1, Math.min(desired, Math.floor(avail / cv.width)));
+  }
+  return { cv: cv, size: size, scale: desired };
+}
+
+function renderPx(el) {
+  if (!el.dataset.pxText) el.dataset.pxText = (el.textContent || '').trim();
+  var text = el.dataset.pxText;
+  if (!text) return;
+  var o = parseOpt(el.dataset.px);
+  var cs = getComputedStyle(el);
+  var family = cs.fontFamily || 'monospace';
+  var desired = parseInt(o.scale, 10) || 3;
+  var parent = el.parentElement || document.body;
+  var avail = parseFloat(el.dataset.pxAvail) || parent.clientWidth || 600;
+
+  var best = fitPx([text], o, family, avail, desired);
+
+  var words = text.split(' ');
+  if (o.wrap === '1' && words.length > 1 && best.cv.height * best.scale < 72) {
+    var cut = 1, diff = 1e9;
+    for (var k = 1; k < words.length; k++) {
+      var dd = Math.abs(words.slice(0, k).join(' ').length - words.slice(k).join(' ').length);
+      if (dd < diff) { diff = dd; cut = k; }
+    }
+    var two = fitPx([words.slice(0, cut).join(' '), words.slice(cut).join(' ')], o, family, avail, desired);
+    if (two.cv.height * two.scale > best.cv.height * best.scale * 1.15) best = two;
+  }
+
+  var cv = best.cv;
+  cv.className = 'px';
+  cv.style.width = (cv.width * best.scale) + 'px';
+  cv.style.height = (cv.height * best.scale) + 'px';
+  cv.setAttribute('role', 'img');
+  cv.setAttribute('aria-label', text);
+  if (o.glow) cv.style.filter = 'drop-shadow(3px 3px 0 rgba(0,0,0,.7)) drop-shadow(0 0 16px ' + o.glow + ')';
+
+  el.textContent = '';
+  el.appendChild(cv);
+  el.classList.add('has-px');
+}
+function renderAllPx() { $$('.px[data-px]').forEach(renderPx); }
+
+var GLYPH = {
+  '0': '01110 10001 10011 10101 11001 10001 01110',
+  '1': '00100 01100 00100 00100 00100 00100 01110',
+  '2': '01110 10001 00001 00010 00100 01000 11111',
+  '3': '11111 00010 00100 00010 00001 10001 01110',
+  '4': '00010 00110 01010 10010 11111 00010 00010',
+  '5': '11111 10000 11110 00001 00001 10001 01110',
+  '6': '00110 01000 10000 11110 10001 10001 01110',
+  '7': '11111 00001 00010 00100 01000 01000 01000',
+  '8': '01110 10001 10001 01110 10001 10001 01110',
+  '9': '01110 10001 10001 01111 00001 00010 01100',
+  'A': '01110 10001 10001 11111 10001 10001 10001',
+  'B': '11110 10001 10001 11110 10001 10001 11110',
+  'C': '01110 10001 10000 10000 10000 10001 01110',
+  'D': '11110 10001 10001 10001 10001 10001 11110',
+  'E': '11111 10000 10000 11110 10000 10000 11111',
+  'F': '11111 10000 10000 11110 10000 10000 10000',
+  'G': '01110 10001 10000 10111 10001 10001 01111',
+  'H': '10001 10001 10001 11111 10001 10001 10001',
+  'I': '11111 00100 00100 00100 00100 00100 11111',
+  'J': '00111 00010 00010 00010 00010 10010 01100',
+  'K': '10001 10010 10100 11000 10100 10010 10001',
+  'L': '10000 10000 10000 10000 10000 10000 11111',
+  'M': '10001 11011 10101 10101 10001 10001 10001',
+  'N': '10001 11001 10101 10011 10001 10001 10001',
+  'O': '01110 10001 10001 10001 10001 10001 01110',
+  'P': '11110 10001 10001 11110 10000 10000 10000',
+  'Q': '01110 10001 10001 10001 10101 10010 01101',
+  'R': '11110 10001 10001 11110 10100 10010 10001',
+  'S': '01111 10000 10000 01110 00001 00001 11110',
+  'T': '11111 00100 00100 00100 00100 00100 00100',
+  'U': '10001 10001 10001 10001 10001 10001 01110',
+  'V': '10001 10001 10001 10001 10001 01010 00100',
+  'W': '10001 10001 10001 10101 10101 11011 10001',
+  'X': '10001 10001 01010 00100 01010 10001 10001',
+  'Y': '10001 10001 01010 00100 00100 00100 00100',
+  'Z': '11111 00001 00010 00100 01000 10000 11111',
+  ' ': '00000 00000 00000 00000 00000 00000 00000',
+  '.': '00000 00000 00000 00000 00000 00100 00100',
+  ':': '00000 00100 00000 00000 00100 00000 00000',
+  '-': '00000 00000 00000 11111 00000 00000 00000',
+  '/': '00001 00001 00010 00100 01000 10000 10000',
+  '%': '11001 11010 00010 00100 01000 01011 10011',
+  'x': '10001 01010 00100 01010 10001 00000 00000',
+  '·': '00000 00000 00000 00100 00100 00000 00000',
+  '+': '00000 00100 00100 11111 00100 00100 00000',
+  '!': '00100 00100 00100 00100 00100 00000 00100'
+};
+function drawText(g, str, x, y, color, s) {
+  s = s || 1; g.fillStyle = color;
+  var chars = String(str).toUpperCase().split('');
+  var cx = x;
+  for (var i = 0; i < chars.length; i++) {
+    var rows = (GLYPH[chars[i]] || GLYPH[' ']).split(' ');
+    for (var r = 0; r < 7; r++) {
+      var line = rows[r];
+      for (var c = 0; c < 5; c++) if (line[c] === '1') g.fillRect(cx + c * s, y + r * s, s, s);
+    }
+    cx += 6 * s;
+  }
+  return cx;
+}
+function textWidth(str, s) { return String(str).length * 6 * (s || 1); }
+
+var LW = 384;
+var SKY = ['#0a0620', '#120c2e', '#1a1040', '#241450', '#2e1858', '#381a5e'];
+var GROUND = 88, W = 192, H = 108, PLAYER_X = 38;
+
+var R = {
+  cv: null, g: null, t: 0, dist: 0, speed: 46,
+  y: 0, vy: 0, onGround: true, bob: 0,
+  obs: [], nextObs: 1.4, dust: [], rain: [], stars: [],
+  far: null, mid: null, city: null, scroll: 0, score: 0,
+  paused: false, started: false
+};
+
+function initRunner() {
+  R.cv = $('#runner');
+  if (!R.cv) return;
+  R.g = R.cv.getContext('2d');
+  R.g.imageSmoothingEnabled = false;
+
+  var rf = mulberry(1337);
+  for (var i = 0; i < 46; i++) {
+    R.stars.push({ x: Math.floor(rf() * W), y: Math.floor(rf() * 54), p: rf() * 6.28, big: rf() > 0.9 });
+  }
+  for (i = 0; i < 34; i++) {
+    R.rain.push({ x: Math.floor(rf() * W), y: Math.floor(rf() * GROUND), v: 60 + rf() * 90, l: 2 + Math.floor(rf() * 3) });
+  }
+
+  R.far = makeLayer(LW, H, function (g) {
+    g.fillStyle = '#2a1454';
+    for (var x = 0; x < LW; x++) {
+      var hh = 58 + 7 * Math.sin(2 * Math.PI * 2 * x / LW) + 4 * Math.sin(2 * Math.PI * 5 * x / LW + 1.2) + 2.5 * Math.sin(2 * Math.PI * 11 * x / LW + 0.4);
+      g.fillRect(x, Math.floor(hh), 1, GROUND - Math.floor(hh));
+    }
+  });
+  R.mid = makeLayer(LW, H, function (g) {
+    g.fillStyle = '#1a0b38';
+    for (var x = 0; x < LW; x++) {
+      var hh = 66 + 5 * Math.sin(2 * Math.PI * 3 * x / LW + 0.7) + 3 * Math.sin(2 * Math.PI * 8 * x / LW + 2.1);
+      g.fillRect(x, Math.floor(hh), 1, GROUND - Math.floor(hh));
+    }
+  });
+  R.city = makeLayer(LW, H, function (g) {
+    var r = mulberry(90210), x = 0;
+    while (x < LW) {
+      var bw = 9 + Math.floor(r() * 15);
+      var bh = 10 + Math.floor(r() * 24);
+      var top = GROUND - bh;
+      if (x + bw > LW) bw = LW - x;
+      g.fillStyle = r() > 0.75 ? '#100726' : '#0c0520';
+      g.fillRect(x, top, bw, bh);
+      if (r() > 0.6) { g.fillStyle = '#160b32'; g.fillRect(x + Math.floor(bw / 2) - 1, top - 4, 2, 4); }
+      for (var wy = top + 3; wy < GROUND - 3; wy += 4) {
+        for (var wx = x + 2; wx < x + bw - 2; wx += 4) {
+          var lit = r();
+          if (lit > 0.42) {
+            g.fillStyle = lit > 0.94 ? '#35e6d0' : (lit > 0.86 ? '#ff5d8f' : '#ffd23f');
+            g.fillRect(wx, wy, 2, 2);
+          }
+        }
+      }
+      if (r() > 0.82) {
+        g.fillStyle = r() > 0.5 ? '#35e6d0' : '#ff5d8f';
+        g.fillRect(x + 2, top + Math.floor(bh / 2), Math.max(3, bw - 4), 2);
+      }
+      x += bw;
+    }
+  });
+}
+
+function pixelCircle(g, cx, cy, r, color) {
+  g.fillStyle = color;
+  for (var y = -r; y <= r; y++) {
+    var dx = Math.floor(Math.sqrt(r * r - y * y));
+    g.fillRect(cx - dx, cy + y, dx * 2, 1);
+  }
+}
+
+function runnerBody(g, x, y, f, force) {
+  var c = function (col) { return force || col; };
+  g.fillStyle = c('#2a1740'); g.fillRect(x + 2, y, 6, 3);
+  g.fillStyle = c('#ffd9b0'); g.fillRect(x + 2, y + 3, 6, 4);
+  g.fillStyle = c('#120a26'); g.fillRect(x + 6, y + 4, 1, 2);
+  g.fillStyle = c('#ff5d8f'); g.fillRect(x, y + 6, 4, 2);
+  g.fillStyle = c('#2f6df0'); g.fillRect(x + 2, y + 7, 6, 4);
+  g.fillStyle = c('#1d4bb0'); g.fillRect(x + 2, y + 7, 6, 1);
+  g.fillStyle = c('#ffd9b0'); g.fillRect(x + 8, y + 8, 1, 3);
+  g.fillStyle = c('#ffd9b0'); g.fillRect(x + 1, y + 8, 1, 2);
+  if (f) {
+    g.fillStyle = c('#1b2a52'); g.fillRect(x + 3, y + 11, 2, 3); g.fillRect(x + 6, y + 11, 2, 2);
+    g.fillStyle = c('#0d0622'); g.fillRect(x + 3, y + 13, 2, 1); g.fillRect(x + 7, y + 12, 2, 2);
+  } else {
+    g.fillStyle = c('#1b2a52'); g.fillRect(x + 3, y + 11, 2, 2); g.fillRect(x + 6, y + 11, 2, 3);
+    g.fillStyle = c('#0d0622'); g.fillRect(x + 3, y + 12, 2, 2); g.fillRect(x + 6, y + 13, 2, 1);
+  }
+}
+
+function drawRunnerChar(g, x, y, f, bob) {
+  x = Math.round(x); y = Math.round(y) + (bob || 0);
+  var o = '#0b0618';
+  runnerBody(g, x - 1, y, f, o);
+  runnerBody(g, x + 1, y, f, o);
+  runnerBody(g, x, y - 1, f, o);
+  runnerBody(g, x, y + 1, f, o);
+  runnerBody(g, x, y, f, null);
+}
+
+function drawObstacle(g, o) {
+  var y = GROUND - o.h;
+  if (o.type === 0) {
+    g.fillStyle = '#ff9f43'; g.fillRect(o.x + 1, y + 2, o.w - 2, o.h - 2);
+    g.fillRect(o.x + 2, y, o.w - 4, 2);
+    g.fillStyle = '#fff3d6'; g.fillRect(o.x + 1, y + 3, o.w - 2, 1);
+    g.fillStyle = '#8a4a10'; g.fillRect(o.x, y + o.h - 1, o.w, 1);
+  } else if (o.type === 1) {
+    g.fillStyle = '#8a5a2b'; g.fillRect(o.x, y, o.w, o.h);
+    g.fillStyle = '#b0763a'; g.fillRect(o.x + 1, y + 1, o.w - 2, 1);
+    g.fillStyle = '#5e3a17'; g.fillRect(o.x + 2, y + 2, o.w - 4, 1); g.fillRect(o.x + 2, y + 4, o.w - 4, 1);
+    g.fillStyle = '#3b240e'; g.fillRect(o.x, y, 1, o.h); g.fillRect(o.x + o.w - 1, y, 1, o.h);
+  } else {
+    g.fillStyle = '#241f4a'; g.fillRect(o.x, y, o.w, o.h);
+    g.fillStyle = '#3a3370'; g.fillRect(o.x + 1, y + 1, o.w - 2, 1);
+    g.fillStyle = '#8bff9e';
+    var t = Math.floor(R.t * 6);
+    for (var i = 0; i < 3; i++) {
+      if ((t + i) % 3 === 0) { g.fillStyle = '#8bff9e'; } else { g.fillStyle = '#2c6b3a'; }
+      g.fillRect(o.x + 1, y + 2 + i * 2, 1, 1);
+    }
+    g.fillStyle = '#35e6d0'; g.fillRect(o.x + o.w - 2, y + 2, 1, 1);
+    g.fillStyle = '#0d0622'; g.fillRect(o.x, y + o.h - 1, o.w, 1);
+  }
+}
+
+function stepRunner(dt) {
+  R.t += dt;
+  R.speed = 46 + Math.min(30, R.t * 0.5);
+  R.dist += R.speed * dt;
+  R.scroll = (R.scroll + R.speed * dt) % LW;
+
+  R.vy += 460 * dt;
+  R.y += R.vy * dt;
+  if (R.y > 0) { R.y = 0; R.vy = 0; if (!R.onGround) { R.onGround = true; dust(R); } }
+  R.bob = R.onGround ? (Math.floor(R.t * 12) % 2) : 0;
+
+  R.nextObs -= dt;
+  if (R.nextObs <= 0) {
+    var type = Math.floor(Math.random() * 3);
+    var hgt = type === 2 ? 10 : (type === 1 ? 6 : 7);
+    var wid = type === 2 ? 7 : (type === 1 ? 6 : 5);
+    R.obs.push({ x: W + 4, w: wid, h: hgt, type: type });
+    R.nextObs = 0.95 + Math.random() * 0.85;
+  }
+  for (var i = R.obs.length - 1; i >= 0; i--) {
+    var o = R.obs[i];
+    o.x -= R.speed * dt;
+    if (o.x < -10) R.obs.splice(i, 1);
+    if (R.onGround && o.x > PLAYER_X && o.x - (PLAYER_X + 10) < 20) {
+      R.y = -0.5; R.vy = -140; R.onGround = false;
+    }
+  }
+
+  for (i = R.dust.length - 1; i >= 0; i--) {
+    var p = R.dust[i];
+    p.x -= (R.speed * 0.7) * dt; p.y += p.vy * dt; p.vy += 60 * dt; p.life -= dt;
+    if (p.life <= 0) R.dust.splice(i, 1);
+  }
+  for (i = 0; i < R.rain.length; i++) {
+    var d = R.rain[i];
+    d.y += d.v * dt; d.x -= R.speed * 0.25 * dt;
+    if (d.y > GROUND) { d.y = -6; d.x = Math.random() * W; }
+    if (d.x < -2) d.x = W + 2;
+  }
+  R.score = Math.floor(R.dist / 6);
+}
+
+function dust() {
+  for (var i = 0; i < 4; i++) {
+    R.dust.push({ x: PLAYER_X + 4 + Math.random() * 6, y: GROUND - 2, vy: -18 - Math.random() * 22, life: 0.35 + Math.random() * 0.3 });
+  }
+}
+
+function drawRunner() {
+  var g = R.g;
+  if (!g) return;
+  var bandH = 14;
+  for (var b = 0; b < SKY.length; b++) {
+    g.fillStyle = SKY[b];
+    g.fillRect(0, b * bandH, W, bandH);
+  }
+  for (var i = 0; i < R.stars.length; i++) {
+    var s = R.stars[i];
+    if (Math.sin(R.t * 2.2 + s.p) < -0.45) continue;
+    g.fillStyle = (Math.floor(R.t * 2 + s.p * 2) % 7 === 0) ? '#ffd23f' : '#cfc6ff';
+    g.fillRect(s.x, s.y, s.big ? 2 : 1, 1);
+  }
+  pixelCircle(g, 156, 20, 9, '#ffe9a8');
+  g.fillStyle = '#f6d27a';
+  pixelCircle(g, 153, 18, 2, '#e9c15f');
+  pixelCircle(g, 158, 24, 2, '#e9c15f');
+  g.globalCompositeOperation = 'destination-out';
+  pixelCircle(g, 162, 15, 7, '#000');
+  g.globalCompositeOperation = 'source-over';
+
+  g.drawImage(R.far, -Math.floor(R.scroll * 0.18) % LW, 0);
+  g.drawImage(R.far, LW - (Math.floor(R.scroll * 0.18) % LW), 0);
+  g.drawImage(R.mid, -Math.floor(R.scroll * 0.42) % LW, 0);
+  g.drawImage(R.mid, LW - (Math.floor(R.scroll * 0.42) % LW), 0);
+  g.drawImage(R.city, -Math.floor(R.scroll * 0.8) % LW, 0);
+  g.drawImage(R.city, LW - (Math.floor(R.scroll * 0.8) % LW), 0);
+
+  g.fillStyle = '#0a0518'; g.fillRect(0, GROUND, W, H - GROUND);
+  g.fillStyle = '#ff5d8f'; g.fillRect(0, GROUND, W, 1);
+  g.globalAlpha = 0.20;
+  var refl = ['#ff5d8f', '#35e6d0', '#ffd23f', '#2f6df0'];
+  for (var k = 0; k < 9; k++) {
+    var rx = (((k * 29 - Math.floor(R.scroll * 0.9)) % W) + W) % W;
+    g.fillStyle = refl[k % 4];
+    g.fillRect(rx, GROUND + 2, 2 + (k % 3), 3 + (k % 4) * 3);
+  }
+  g.globalAlpha = 1;
+  g.fillStyle = '#1a0f36';
+  var dash = Math.floor(R.scroll) % 16;
+  for (var x = -dash; x < W; x += 16) g.fillRect(x, GROUND + 8, 7, 1);
+  for (x = -dash; x < W; x += 16) g.fillRect(x + 4, GROUND + 15, 9, 1);
+
+  for (i = 0; i < R.obs.length; i++) drawObstacle(g, R.obs[i]);
+  for (i = 0; i < R.dust.length; i++) {
+    g.fillStyle = 'rgba(200,190,255,' + (R.dust[i].life * 1.6).toFixed(2) + ')';
+    g.fillRect(Math.round(R.dust[i].x), Math.round(R.dust[i].y), 1, 1);
+  }
+  drawRunnerChar(g, PLAYER_X, GROUND - 14 + R.y, Math.floor(R.t * 10) % 2, R.bob);
+
+  for (i = 0; i < R.rain.length; i++) {
+    var d = R.rain[i];
+    g.fillStyle = 'rgba(150,190,255,.30)';
+    g.fillRect(Math.round(d.x), Math.round(d.y), 1, d.l);
+  }
+
+  var sc = String(R.score);
+  while (sc.length < 6) sc = '0' + sc;
+  var tw = textWidth(sc, 1);
+  drawText(g, sc, Math.round((W - tw) / 2) + 6, 6, '#ffd23f', 1);
+  g.fillStyle = '#ffd23f';
+  g.fillRect(Math.round((W - tw) / 2) - 6, 7, 3, 3);
+}
+
+function loopRunner(ts) {
+  requestAnimationFrame(loopRunner);
+  if (!R.started) return;
+  if (!R.last) R.last = ts;
+  var dt = Math.min(0.05, (ts - R.last) / 1000);
+  R.last = ts;
+  if (R.paused) return;
+  stepRunner(dt);
+  drawRunner();
+}
+
+var RT = { cv: null, g: null, t: 0, stars: [], packets: [] };
+
+function initRoute() {
+  RT.cv = $('#route');
+  if (!RT.cv) return;
+  var g = RT.cv.getContext('2d');
+  RT.g = g; g.imageSmoothingEnabled = false;
+  var r = mulberry(4242);
+  for (var i = 0; i < 70; i++) RT.stars.push({ x: Math.floor(r() * 720), y: Math.floor(r() * 110), p: r() * 6.28 });
+  for (i = 0; i < 9; i++) RT.packets.push({ p: r(), dir: i % 3 === 0 ? -1 : 1, sp: 0.10 + r() * 0.06, col: i % 3 === 0 ? '#35e6d0' : '#ffd23f' });
+}
+
+function drawTowerMsk(g, x, base) {
+  var B = '#3b2b7d', E = '#6a56d4', D = '#241a52', Y = '#ffd23f';
+  px(g, x - 24, base - 10, 48, 10, D);
+  px(g, x - 24, base - 10, 48, 2, E);
+  px(g, x - 14, base - 40, 28, 30, B);
+  px(g, x - 14, base - 40, 28, 2, E);
+  px(g, x - 14, base - 40, 2, 30, E);
+  for (var y = base - 35; y < base - 14; y += 6) {
+    px(g, x - 10, y, 4, 2, Y); px(g, x - 3, y, 3, 2, D); px(g, x + 4, y, 4, 2, Y);
+  }
+  px(g, x - 8, base - 60, 16, 20, B);
+  px(g, x - 8, base - 60, 16, 2, E);
+  for (y = base - 56; y < base - 44; y += 5) { px(g, x - 5, y, 2, 2, '#35e6d0'); px(g, x + 3, y, 2, 2, D); }
+  px(g, x - 4, base - 76, 8, 16, B);
+  px(g, x - 4, base - 76, 8, 2, E);
+  px(g, x - 2, base - 90, 4, 14, E);
+  px(g, x - 1, base - 100, 2, 10, D);
+  px(g, x - 2, base - 103, 3, 3, (Math.floor(RT.t * 1.6) % 2) ? '#ff3b57' : '#521020');
+  px(g, x - 24, base - 2, 48, 1, '#35e6d0');
+}
+
+function drawTowerFra(g, x, base) {
+  var B = '#33276e', E = '#5c4bc0', D = '#1d1445';
+  var towers = [
+    { dx: -42, w: 20, h: 52 }, { dx: -16, w: 24, h: 78 },
+    { dx: 14, w: 18, h: 62 }, { dx: 38, w: 14, h: 40 }
+  ];
+  for (var i = 0; i < towers.length; i++) {
+    var t = towers[i], tx = x + t.dx, ty = base - t.h;
+    px(g, tx, ty, t.w, t.h, B);
+    px(g, tx, ty, t.w, 2, E);
+    px(g, tx, ty, 2, t.h, E);
+    px(g, tx + t.w - 2, ty, 2, t.h, D);
+    for (var wy = ty + 5; wy < base - 5; wy += 5) {
+      for (var wx = tx + 3; wx < tx + t.w - 3; wx += 4) {
+        if ((wx * 7 + wy * 3) % 11 < 5) px(g, wx, wy, 2, 2, '#35e6d0');
+      }
+    }
+  }
+  px(g, x - 21, base - 98, 3, 28, E);
+  px(g, x - 22, base - 101, 5, 4, (Math.floor(RT.t * 1.5 + 0.7) % 2) ? '#ff3b57' : '#521020');
+  px(g, x - 56, base - 1, 112, 1, '#ff5d8f');
+}
+
+function drawRoute(ts) {
+  var g = RT.g; if (!g) return;
+  var base = 168;
+  var bands = ['#07030f', '#0c0620', '#120a2e', '#1a0f3c', '#241247', '#301856'];
+  for (var b = 0; b < bands.length; b++) { g.fillStyle = bands[b]; g.fillRect(0, b * 28, 720, 28); }
+
+  var grd = g.createRadialGradient(360, base, 4, 360, base, 300);
+  grd.addColorStop(0, 'rgba(255,60,150,.30)');
+  grd.addColorStop(.45, 'rgba(120,40,180,.14)');
+  grd.addColorStop(1, 'rgba(0,0,0,0)');
+  g.fillStyle = grd; g.fillRect(0, 0, 720, base);
+
+  for (var i = 0; i < RT.stars.length; i++) {
+    var s = RT.stars[i];
+    if (Math.sin(RT.t * 1.8 + s.p) < -0.6) continue;
+    g.fillStyle = 'rgba(207,198,255,.85)'; g.fillRect(s.x, s.y, 1, 1);
+  }
+
+  g.fillStyle = '#0a0518'; g.fillRect(0, base, 720, 268 - base);
+  g.strokeStyle = 'rgba(255,45,140,.45)'; g.lineWidth = 1;
+  for (i = -10; i <= 10; i++) {
+    g.beginPath(); g.moveTo(360 + i * 10, base); g.lineTo(360 + i * 120, 268); g.stroke();
+  }
+  for (i = 1; i < 10; i++) {
+    var y = base + Math.pow(i / 9, 1.9) * 98;
+    g.beginPath(); g.moveTo(0, Math.round(y) + 0.5); g.lineTo(720, Math.round(y) + 0.5); g.stroke();
+  }
+  g.fillStyle = '#ff2d8c'; g.fillRect(0, base, 720, 1);
+
+  drawTowerMsk(g, 120, base);
+  drawTowerFra(g, 596, base);
+
+  g.globalAlpha = .17;
+  var refl = ['#35e6d0', '#ffd23f', '#6a56d4'];
+  for (var k = 0; k < 10; k++) {
+    px(g, 120 - 26 + k * 6, base + 2, 3, 5 + (k % 4) * 6, refl[k % 3]);
+    px(g, 596 - 52 + k * 11, base + 2, 3, 4 + (k % 3) * 7, refl[(k + 1) % 3]);
+  }
+  g.globalAlpha = 1;
+
+  var ax = 120, ay = base - 98, bx = 596, by = base - 94, lift = 44;
+  for (i = 0; i <= 60; i++) {
+    var tt = i / 60;
+    var px2 = ax + (bx - ax) * tt;
+    var py2 = ay + (by - ay) * tt - Math.sin(Math.PI * tt) * lift;
+    if (i % 2 === 0) { g.fillStyle = 'rgba(255,210,63,.55)'; g.fillRect(Math.round(px2), Math.round(py2), 2, 2); }
+  }
+  for (i = 0; i < RT.packets.length; i++) {
+    var p = RT.packets[i];
+    p.p += p.sp / 60;
+    if (p.p > 1) p.p -= 1;
+    var t2 = p.dir > 0 ? p.p : 1 - p.p;
+    var qx = ax + (bx - ax) * t2;
+    var qy = ay + (by - ay) * t2 - Math.sin(Math.PI * t2) * 44;
+    g.fillStyle = p.col;
+    g.fillRect(Math.round(qx) - 1, Math.round(qy) - 1, 4, 4);
+    g.fillStyle = 'rgba(255,255,255,.55)';
+    g.fillRect(Math.round(qx), Math.round(qy), 1, 1);
+    g.fillStyle = 'rgba(255,210,63,.10)';
+    g.fillRect(Math.round(qx) - 3, Math.round(qy) - 3, 8, 8);
+  }
+
+  drawText(g, 'MSK-01', 120 - 36, base + 12, '#35e6d0', 2);
+  drawText(g, 'FRA-01', 596 - 36, base + 12, '#ff5d8f', 2);
+  drawText(g, '2 004 KM', 14, 12, '#8a80c0', 2);
+  drawText(g, 'RTT 28 MS', 14, 32, '#ffd23f', 2);
+  drawText(g, '10 GBPS', 14, 52, '#8a80c0', 2);
+
+  var rate = 'LIVE ' + fmtMb(Traffic.rate).replace(',', '.') + ' MBPS';
+  drawText(g, rate, 706 - textWidth(rate, 2), 12, '#35e6d0', 2);
+}
+
+var chartCv, chartG;
+function initChart() {
+  chartCv = $('#chart'); if (!chartCv) return;
+  chartG = chartCv.getContext('2d');
+  chartG.imageSmoothingEnabled = false;
+}
+function drawChart() {
+  if (!chartG) return;
+  var g = chartG, Wc = chartCv.width, Hc = chartCv.height;
+  g.fillStyle = '#0a0818'; g.fillRect(0, 0, Wc, Hc);
+  for (var r = 1; r < 4; r++) {
+    var gy = Math.floor(Hc * r / 4);
+    g.fillStyle = 'rgba(47,42,94,.5)';
+    for (var gx = 0; gx < Wc; gx += 10) g.fillRect(gx, gy, 5, 1);
+  }
+  var n = 60, gap = Math.floor(Wc / n), bw = Math.max(3, gap - 2), baseY = Hc - 4;
+  var data = Traffic.samples.slice(-n);
+  var off = n - data.length;
+  var maxV = 12;
+  for (var i = 0; i < data.length; i++) if (data[i] > maxV) maxV = data[i];
+  maxV = maxV * 1.18;
+  for (i = 0; i < n; i++) {
+    var x = i * gap + 1;
+    var v = i >= off ? data[i - off] : 0;
+    if (v <= 0.01) { g.fillStyle = '#171334'; g.fillRect(x, baseY - 2, bw, 2); continue; }
+    var bh = Math.max(2, Math.round((v / maxV) * (Hc - 12)));
+    var isLast = (i === n - 1);
+    g.fillStyle = isLast ? '#ffd23f' : (v > maxV * 0.86 ? '#8bff9e' : '#35e6d0');
+    g.fillRect(x, baseY - bh, bw, bh);
+    g.fillStyle = isLast ? '#fff3b0' : 'rgba(255,255,255,.45)';
+    g.fillRect(x, baseY - bh, bw, 2);
+  }
+  g.fillStyle = '#2f2a5e'; g.fillRect(0, Hc - 1, Wc, 1);
+}
+
+function px(g, x, y, w, h, c) { g.fillStyle = c; g.fillRect(x | 0, y | 0, w | 0, h | 0); }
+
+function thumbRunner(g) {
+  var sky = ['#0a0620', '#120c2e', '#1a1040', '#241450', '#2e1858', '#381a5e'];
+  for (var i = 0; i < 6; i++) px(g, 0, i * 10, 96, 10, sky[i]);
+  for (i = 0; i < 9; i++) px(g, 7 + i * 10, 6 + (i % 4) * 7, 1, 1, '#cfc6ff');
+  pixelCircle(g, 79, 12, 5, '#ffe9a8');
+  pixelCircle(g, 82, 10, 4, sky[1]);
+  var r = mulberry(31);
+  var bx = 0;
+  while (bx < 96) {
+    var bw = 6 + Math.floor(r() * 8), bh2 = 8 + Math.floor(r() * 14);
+    px(g, bx, 52 - bh2, bw, bh2, '#1a0b38');
+    if (r() > 0.5) px(g, bx + 2, 52 - bh2 + 3, 2, 2, '#ffd23f');
+    bx += bw;
+  }
+  px(g, 0, 52, 96, 8, '#0a0518');
+  px(g, 0, 52, 96, 1, '#ff5d8f');
+  px(g, 0, 57, 96, 1, '#1a0f36');
+  drawRunnerChar(g, 16, 38, 0, 0);
+  px(g, 46, 45, 5, 7, '#ff9f43');
+  px(g, 47, 43, 3, 2, '#ff9f43');
+  px(g, 46, 47, 5, 1, '#fff3d6');
+  px(g, 64, 46, 6, 6, '#8a5a2b');
+  px(g, 64, 48, 6, 1, '#5e3a17');
+}
+
+function thumbDungeon(g) {
+  px(g, 0, 0, 96, 60, '#0a0614');
+  for (var y = 0; y < 46; y += 8) {
+    for (var x = (y % 16 === 0 ? 0 : -8); x < 96; x += 16) {
+      px(g, x, y, 15, 7, '#1c1230');
+      px(g, x, y, 15, 1, '#261a42');
+    }
+  }
+  px(g, 0, 46, 96, 14, '#120c20');
+  px(g, 34, 24, 28, 24, '#0a0614');
+  px(g, 38, 28, 20, 20, '#2a1a48');
+  px(g, 42, 32, 12, 16, '#ff9f43');
+  px(g, 44, 34, 8, 12, '#ffd23f');
+  px(g, 10, 20, 3, 12, '#3a2a5a');
+  px(g, 9, 16, 5, 5, '#ff9f43');
+  px(g, 10, 14, 3, 3, '#ffd23f');
+  px(g, 82, 18, 4, 14, '#3a2a5a');
+  px(g, 80, 14, 8, 5, '#35e6d0');
+}
+
+function thumbDrift(g) {
+  for (var i = 0; i < 5; i++) px(g, 0, i * 8, 96, 8, ['#12042a', '#200a3e', '#33106a', '#4a168c', '#6a1ea8'][i]);
+  px(g, 0, 40, 96, 20, '#0a0518');
+  px(g, 0, 40, 96, 2, '#ff2d8c');
+  for (i = 0; i < 6; i++) px(g, 44 + i * 2, 40 + Math.pow(i, 1.7) * 2, 4 + i * 3, 2, '#ff2d8c');
+  pixelCircle(g, 48, 26, 11, '#ff2d8c');
+  px(g, 37, 22, 22, 3, '#ffd23f');
+  px(g, 26, 44, 20, 7, '#35e6d0');
+  px(g, 30, 41, 12, 4, '#1a8f83');
+  px(g, 28, 50, 4, 3, '#0a0518');
+  px(g, 41, 50, 4, 3, '#0a0518');
+  px(g, 24, 46, 2, 2, '#ff3b57');
+}
+
+function thumbSiberia(g) {
+  px(g, 0, 0, 96, 60, '#0d1a2e');
+  px(g, 0, 0, 96, 26, '#132a44');
+  px(g, 0, 44, 96, 16, '#e8f2ff');
+  px(g, 0, 44, 96, 2, '#b9cde6');
+  var r = mulberry(77);
+  for (var i = 0; i < 7; i++) {
+    var x = 6 + i * 13, h = 12 + Math.floor(r() * 14);
+    px(g, x, 44 - h, 2, h, '#0a1420');
+    px(g, x - 6, 44 - h + 6, 14, 3, '#2c5a44');
+    px(g, x - 5, 44 - h + 3, 12, 3, '#376e52');
+    px(g, x - 4, 44 - h, 10, 3, '#42806a');
+  }
+  px(g, 62, 32, 18, 12, '#3a2a1e');
+  px(g, 60, 28, 22, 4, '#5a3f2c');
+  px(g, 66, 35, 5, 5, '#ffd23f');
+  px(g, 74, 35, 5, 5, '#ff9f43');
+  px(g, 70, 24, 3, 5, '#5a3f2c');
+  for (i = 0; i < 20; i++) px(g, Math.floor(r() * 96), Math.floor(r() * 44), 1, 1, '#ffffff');
+}
+
+function thumbGhost(g) {
+  px(g, 0, 0, 96, 60, '#08040f');
+  px(g, 8, 8, 80, 44, '#150c22');
+  px(g, 10, 10, 76, 40, '#0b0614');
+  var r = mulberry(5150);
+  for (var i = 0; i < 160; i++) {
+    px(g, 10 + Math.floor(r() * 76), 10 + Math.floor(r() * 40), 1, 1, r() > 0.7 ? '#3a2a5a' : '#1e1430');
+  }
+  px(g, 34, 24, 8, 6, '#ff3b57');
+  px(g, 54, 24, 8, 6, '#ff3b57');
+  px(g, 36, 26, 3, 3, '#ffd0d8');
+  px(g, 56, 26, 3, 3, '#ffd0d8');
+  px(g, 40, 36, 16, 2, '#8a1a2e');
+  px(g, 0, 52, 96, 8, '#120a1c');
+  px(g, 4, 12, 2, 40, '#2a1a3e');
+  px(g, 88, 12, 2, 40, '#2a1a3e');
+}
+
+function thumbRoute(g) {
+  for (var i = 0; i < 6; i++) px(g, 0, i * 9, 96, 9, ['#1a0820', '#2a0c2e', '#3c103c', '#52144a', '#6a1a56', '#7e205e'][i]);
+  pixelCircle(g, 48, 34, 12, '#ffb703');
+  px(g, 0, 40, 96, 20, '#150a20');
+  px(g, 34, 44, 28, 16, '#241238');
+  for (i = 0; i < 4; i++) px(g, 30 + i * 10, 40 - (i % 2) * 4, 8, 8 + (i % 2) * 4, '#0d0618');
+  px(g, 44, 46, 4, 2, '#ffd23f');
+  px(g, 56, 46, 4, 2, '#ffd23f');
+  px(g, 8, 30, 2, 14, '#5a4a6a');
+  px(g, 4, 24, 12, 8, '#35e6d0');
+  px(g, 6, 27, 8, 2, '#0a0518');
+  px(g, 0, 52, 96, 8, '#0a0518');
+}
+
+var THUMBS = { runner: thumbRunner, dungeon: thumbDungeon, drift: thumbDrift, siberia: thumbSiberia, ghost: thumbGhost, route: thumbRoute };
+
+var PACKS = [
+  { id: 'runner', title: 'PIXEL RUNNER', meta: 'экшен · 1–4 игрока · 1992', size: 1.46e9, label: '1.4 ГБ', rating: '★★★★★' },
+  { id: 'dungeon', title: 'DUNGEON OF BYTES', meta: 'RPG · 120 часов · 1994', size: 2.18e9, label: '2.1 ГБ', rating: '★★★★☆' },
+  { id: 'drift', title: 'NEON DRIFT 92', meta: 'гонки · 6 трасс · 1993', size: 8.9e8, label: '860 МБ', rating: '★★★★☆' },
+  { id: 'siberia', title: 'SIBERIA TRADER', meta: 'стратегия · 1 игрок · 1996', size: 1.12e9, label: '1.1 ГБ', rating: '★★★☆☆' },
+  { id: 'ghost', title: 'GHOST CARTRIDGE', meta: 'хоррор · 4 часа · 1995', size: 6.6e8, label: '640 МБ', rating: '★★★★★' },
+  { id: 'route', title: 'ROUTE 7: BERLIN', meta: 'квест · 12 глав · 1997', size: 1.83e9, label: '1.8 ГБ', rating: '★★★★☆' }
+];
+
+function buildCards() {
+  var host = $('#cards'); if (!host) return;
+  host.innerHTML = PACKS.map(function (p, i) {
+    return '<article class="card">' +
+      '<div class="card-top"><canvas class="thumb" width="96" height="60" aria-hidden="true"></canvas>' +
+      '<span class="size-tag">' + p.label + '</span></div>' +
+      '<div class="card-body">' +
+      '<h3 class="card-title">' + esc(p.title) + '</h3>' +
+      '<p class="card-meta">' + esc(p.meta) + '</p>' +
+      '<div class="card-foot"><span class="rating">' + p.rating + '</span>' +
+      '<button class="btn btn-sm" data-dl="' + i + '">СКАЧАТЬ</button></div>' +
+      '<div class="dl-bar"><i></i></div>' +
+      '</div></article>';
+  }).join('');
+
+  $$('.card', host).forEach(function (card, i) {
+    var cv = $('canvas', card), g = cv.getContext('2d');
+    g.imageSmoothingEnabled = false;
+    THUMBS[PACKS[i].id](g, cv.width, cv.height);
+  });
+  $$('[data-dl]', host).forEach(function (btn) {
+    btn.addEventListener('click', function () { startDownload(btn, PACKS[+btn.dataset.dl]); });
+  });
+}
+
+var dlBusy = false;
+async function startDownload(btn, pack) {
+  if (dlBusy) return;
+  dlBusy = true;
+  var card = btn.closest('.card');
+  var bar = $('.dl-bar', card), fill = $('i', bar);
+  var old = btn.textContent;
+  bar.classList.add('on');
+  btn.disabled = true; btn.textContent = '0%';
+  try {
+    await Traffic.pull(pack.size, function (p) {
+      fill.style.width = (p * 100).toFixed(0) + '%';
+      btn.textContent = Math.min(99, Math.round(p * 100)) + '%';
+    });
+    fill.style.width = '100%';
+    btn.textContent = 'ГОТОВО';
+    setTimeout(function () { bar.classList.remove('on'); fill.style.width = '0%'; btn.textContent = old; btn.disabled = false; }, 2600);
+  } catch (e) {
+    btn.textContent = 'ОШИБКА';
+    setTimeout(function () { bar.classList.remove('on'); btn.textContent = old; btn.disabled = false; }, 2000);
+  }
+  dlBusy = false;
+}
+
+var CHAT = [
+  { n: 'leopold_8bit', t: '19:04', c: 'из Франкфурта тянет 11 мбит, картинка чистая. за три часа — 12 гигов, как и обещали', v: 0 },
+  { n: 'nastya_px', t: '19:05', c: 'пак NEON DRIFT качается четыре минуты, скорость не просела ни разу', v: 1 },
+  { n: 'sergey_72', t: '19:06', c: 'у кого-нибудь ещё edge MSK-02 отдаёт 30 мс? или это только у меня', v: 2 },
+  { n: 'byte_hunter', t: '19:07', c: '30–31 мс, норма. эфир не рвётся с 18:00, ни одного дропа', v: 3 },
+  { n: 'leopold_8bit', t: '19:08', c: 'да, стабильно. и без рекламы — что сейчас редкость', v: 0 }
+];
+var AV = [
+  { bg: '#1b2a52', hair: '#3a2a5a', skin: '#ffd9b0' },
+  { bg: '#4a1a3a', hair: '#ffd23f', skin: '#f7c99a' },
+  { bg: '#1a3a2a', hair: '#8bff9e', skin: '#ffd9b0' },
+  { bg: '#2a1a4a', hair: '#35e6d0', skin: '#e8b98a' }
+];
+function drawAvatar(g, v) {
+  var p = AV[v % AV.length];
+  px(g, 0, 0, 8, 8, p.bg);
+  px(g, 1, 1, 6, 2, p.hair);
+  px(g, 1, 3, 6, 4, p.skin);
+  px(g, 2, 4, 1, 1, '#120a26');
+  px(g, 5, 4, 1, 1, '#120a26');
+  px(g, 3, 6, 2, 1, '#8a4a4a');
+  px(g, 0, 1, 1, 3, p.hair);
+  px(g, 7, 1, 1, 3, p.hair);
+}
+function buildChat() {
+  var host = $('#msgs'); if (!host) return;
+  host.innerHTML = CHAT.map(function (m, i) {
+    return '<li class="msg"><canvas class="av" width="8" height="8" aria-hidden="true"></canvas>' +
+      '<div><b>@' + esc(m.n) + '</b><time>' + esc(m.t) + '</time><p>' + esc(m.c) + '</p></div></li>';
+  }).join('');
+  $$('.av', host).forEach(function (cv, i) {
+    var g = cv.getContext('2d'); g.imageSmoothingEnabled = false;
+    drawAvatar(g, CHAT[i].v);
+  });
+}
+
+var CFG = {
+  mode: 'demo',
+  url: '/stream/8bit.bin',
+  bitrate: 9800,
+  capMB: 128
+};
+try {
+  var saved = JSON.parse(localStorage.getItem('pixelport.cfg') || 'null');
+  if (saved && typeof saved === 'object') {
+    if (saved.mode === 'live' || saved.mode === 'demo') CFG.mode = saved.mode;
+    if (typeof saved.url === 'string') CFG.url = saved.url;
+    if (+saved.bitrate > 0) CFG.bitrate = +saved.bitrate;
+  }
+} catch (e) {}
+
+function saveCfg() {
+  try { localStorage.setItem('pixelport.cfg', JSON.stringify({ mode: CFG.mode, url: CFG.url, bitrate: CFG.bitrate })); } catch (e) {}
+}
+
+var Traffic = {
+  on: false,
+  inBytes: 0, outBytes: 0, errors: 0,
+  samples: [], peak: 0,
+  _lastBytes: 0, _lastAt: 0, _gen: 0, _ctrl: null, _demoId: null,
+  startedAt: 0,
+
+  get rate() { return CFG.bitrate; },
+  bps: function () { return CFG.bitrate * 125; },
+
+  addIn: function (n) { this.inBytes += n; },
+  addOut: function (n) { this.outBytes += n; },
+
+  start: function () {
+    if (this.on) return;
+    this.on = true;
+    this._gen++;
+    this.startedAt = Date.now();
+    if (CFG.mode === 'demo') this._startDemo();
+    else this._startLive(this._gen);
+    UI.syncPlay();
+  },
+  stop: function () {
+    this.on = false;
+    this._gen++;
+    if (this._demoId) { clearInterval(this._demoId); this._demoId = null; }
+    if (this._ctrl) { try { this._ctrl.abort(); } catch (e) {} this._ctrl = null; }
+    UI.syncPlay();
+  },
+  restart: function () {
+    var was = this.on;
+    this.stop();
+    if (was) setTimeout(this.start.bind(this), 60);
+  },
+
+  _startDemo: function () {
+    var self = this;
+    if (this._demoId) clearInterval(this._demoId);
+    this._demoId = setInterval(function () {
+      if (!self.on || CFG.mode !== 'demo') return;
+      var per = self.bps() * 0.25;
+      self.addIn(per * (0.91 + Math.random() * 0.18));
+      self.addOut(per * 0.0035);
+    }, 250);
+  },
+
+  _startLive: function (gen) {
+    var self = this;
+    this._ctrl = new AbortController();
+    var signal = this._ctrl.signal;
+    (async function () {
+      while (self.on && gen === self._gen && CFG.mode === 'live') {
+        var url = CFG.url;
+        if (!url) { self.errors++; await sleep(1500); continue; }
+        var res;
+        try {
+          res = await fetch(url + (url.indexOf('?') > -1 ? '&' : '?') + '_=' + Date.now(), {
+            cache: 'no-store', signal: signal, mode: 'cors', credentials: 'omit', redirect: 'follow'
+          });
+          if (!res.ok || !res.body) throw new Error('HTTP ' + res.status);
+        } catch (e) {
+          if (!self.on || gen !== self._gen) return;
+          self.errors++; UI.syncOps();
+          await sleep(1500);
+          continue;
+        }
+        var reader = res.body.getReader();
+        var session = 0, t0 = now();
+        try {
+          for (;;) {
+            var chunk = await reader.read();
+            if (chunk.done) break;
+            self.addIn(chunk.value.byteLength);
+            self.addOut(chunk.value.byteLength * 0.004);
+            session += chunk.value.byteLength;
+            var rate = self.bps();
+            var expect = (now() - t0) / 1000 * rate;
+            if (session - expect > 131072) {
+              await sleep(Math.min(3000, (session - expect) / rate * 1000));
+            }
+            if (!self.on || gen !== self._gen || CFG.mode !== 'live') { try { reader.cancel(); } catch (e) {} break; }
+          }
+        } catch (e) {
+          if (!self.on || gen !== self._gen) return;
+          self.errors++; UI.syncOps();
+        }
+      }
+    })();
+  },
+
+  sample: function () {
+    var t = now();
+    if (!this._lastAt) { this._lastAt = t; this._lastBytes = this.inBytes; return; }
+    var dt = (t - this._lastAt) / 1000;
+    if (dt < 0.5) return;
+    var db = this.inBytes - this._lastBytes;
+    var mbps = (db * 8 / 1e6) / dt;
+    this.samples.push(mbps);
+    if (this.samples.length > 60) this.samples.shift();
+    if (mbps > this.peak) this.peak = mbps;
+    this._lastAt = t; this._lastBytes = this.inBytes;
+  },
+  seedSamples: function () {
+    var base = CFG.bitrate / 1000;
+    this.samples = [];
+    this.peak = 0;
+    for (var i = 0; i < 60; i++) {
+      var v = base * (0.88 + Math.random() * 0.2);
+      this.samples.push(v);
+      if (v > this.peak) this.peak = v;
+    }
+    this._lastAt = 0; this._lastBytes = this.inBytes;
+  },
+  lastMbps: function () {
+    return this.samples.length ? this.samples[this.samples.length - 1] : 0;
+  },
+  avgMbps: function () {
+    if (!this.samples.length) return 0;
+    var s = 0;
+    for (var i = 0; i < this.samples.length; i++) s += this.samples[i];
+    return s / this.samples.length;
+  },
+  reset: function () {
+    this.inBytes = 0; this.outBytes = 0; this.samples = []; this.peak = 0;
+    this._lastBytes = 0; this._lastAt = 0; this.startedAt = Date.now();
+  },
+
+  pull: async function (bytes, onProgress) {
+    var self = this;
+    var rate = this.bps();
+    if (CFG.mode === 'demo' || !CFG.url) {
+      var dur = 2.6, steps = 26, added = 0;
+      var budget = Math.min(bytes, rate * dur);
+      for (var i = 0; i < steps; i++) {
+        await sleep(dur * 1000 / steps);
+        var add = budget / steps;
+        added += add;
+        this.addIn(add); this.addOut(add * 0.02);
+        if (onProgress) onProgress((i + 1) / steps);
+      }
+      return added;
+    }
+    var cap = Math.min(bytes, CFG.capMB * 1048576);
+    var ctrl = new AbortController();
+    var res = await fetch(CFG.url + (CFG.url.indexOf('?') > -1 ? '&' : '?') + '_p=' + Date.now(), { cache: 'no-store', signal: ctrl.signal, mode: 'cors' });
+    if (!res.ok || !res.body) throw new Error('HTTP ' + res.status);
+    var reader = res.body.getReader(), got = 0, t0 = now();
+    for (;;) {
+      var c = await reader.read();
+      if (c.done) break;
+      got += c.value.byteLength;
+      this.addIn(c.value.byteLength); this.addOut(c.value.byteLength * 0.01);
+      if (onProgress) onProgress(Math.min(1, got / cap));
+      var expect = (now() - t0) / 1000 * rate;
+      if (got - expect > 131072) await sleep(Math.min(400, (got - expect) / rate * 1000));
+      if (got >= cap) { try { await reader.cancel(); } catch (e) {} break; }
+    }
+    return got;
+  }
+};
+
+var UI = {
+  qualityIdx: 2,
+  qualities: [2800, 6500, 11000],
+  qLabels: ['720p', '1080p', '1440p'],
+  tc: 1 * 3600 + 24 * 60 + 7,
+  viewers: 12483,
+  capViewers: 2148,
+  ping: 28,
+
+  init: function () {
+    var self = this;
+    renderAllPx();
+    initRunner(); initRoute(); initChart();
+    buildCards(); buildChat(); this.buildTicker();
+    if (R.cv) { R.started = true; requestAnimationFrame(loopRunner); }
+    if (RT.cv) requestAnimationFrame(function tick(ts) { requestAnimationFrame(tick); RT.t = ts / 1000; drawRoute(); });
+
+    this.applyQuality(2);
+    this.bind();
+    Traffic.seedSamples();
+    Traffic.start();
+    setInterval(function () { Traffic.sample(); }, 1000);
+    setInterval(function () { self.tick(); }, 250);
+    setTimeout(renderAllPx, 400);
+    window.addEventListener('resize', debounce(renderAllPx, 220));
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(renderAllPx);
+    window.addEventListener('hashchange', function () { if (location.hash === '#ops') self.openOps(); });
+    if (location.hash === '#ops') setTimeout(function () { self.openOps(); }, 50);
+  },
+
+  bind: function () {
+    var self = this;
+    $('#btnPlay').addEventListener('click', function () { self.togglePlay(); });
+    $('#btnQ').addEventListener('click', function () {
+      self.applyQuality((self.qualityIdx + 1) % 3);
+      self.toastQuality();
+    });
+    $('#btnFs').addEventListener('click', function () {
+      var el = $('#screen');
+      if (!document.fullscreenElement) { if (el.requestFullscreen) el.requestFullscreen(); }
+      else if (document.exitFullscreen) document.exitFullscreen();
+    });
+    $('#screen').addEventListener('click', function (e) {
+      if (e.target.closest('.scr-ctrl')) return;
+      self.togglePlay();
+    });
+    $('#opsLink').addEventListener('click', function (e) { e.preventDefault(); self.openOps(); });
+    $('#opsClose').addEventListener('click', function () { self.closeOps(); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === '~' || e.key === '`') { e.preventDefault(); $('#ops').classList.contains('on') ? self.closeOps() : self.openOps(); }
+      if (e.key === 'Escape') self.closeOps();
+      if (e.key === ' ' && e.target === document.body) { e.preventDefault(); self.togglePlay(); }
+    });
+    $('#mDemo').addEventListener('click', function () { CFG.mode = 'demo'; saveCfg(); Traffic.restart(); self.syncOps(); });
+    $('#mLive').addEventListener('click', function () { CFG.mode = 'live'; saveCfg(); Traffic.restart(); self.syncOps(); });
+    $('#cfgUrl').addEventListener('change', function (e) { CFG.url = e.target.value.trim(); saveCfg(); Traffic.restart(); self.syncOps(); });
+    $('#cfgRate').addEventListener('input', function (e) {
+      CFG.bitrate = +e.target.value;
+      $('#cfgRateLbl').textContent = fmtMb(CFG.bitrate);
+      saveCfg(); self.applyRateLabels();
+    });
+    $('#opsStart').addEventListener('click', function () { Traffic.start(); self.syncOps(); });
+    $('#opsStop').addEventListener('click', function () { Traffic.stop(); self.syncOps(); });
+  },
+
+  togglePlay: function () {
+    if (Traffic.on) Traffic.stop(); else Traffic.start();
+    R.paused = !Traffic.on;
+    $('#screen').classList.toggle('paused', !Traffic.on);
+    $('#btnPlay').textContent = Traffic.on ? '❚❚' : '▶';
+    this.syncPlay();
+  },
+
+  syncPlay: function () {
+    var st = $('#tStatus');
+    if (!st) return;
+    st.classList.toggle('paused', !Traffic.on);
+    $('span', st).textContent = Traffic.on ? 'ПОТОК АКТИВЕН' : 'ПОТОК ПРИОСТАНОВЛЕН';
+    R.paused = !Traffic.on;
+    $('#screen').classList.toggle('paused', !Traffic.on);
+    $('#btnPlay').textContent = Traffic.on ? '❚❚' : '▶';
+  },
+
+  applyQuality: function (i) {
+    this.qualityIdx = i;
+    var rates = this.qualities, lbl = this.qLabels;
+    CFG.bitrate = rates[i];
+    $('#btnQ').textContent = i === 2 ? '1440p' : lbl[i];
+    $('#scrQuality').textContent = lbl[i] + (i === 2 ? '60' : '60');
+    $('#cfgRate').value = CFG.bitrate;
+    $('#cfgRateLbl').textContent = fmtMb(CFG.bitrate);
+    $('#scrRate').textContent = fmtMb(CFG.bitrate);
+    saveCfg();
+    this.applyRateLabels();
+  },
+
+  applyRateLabels: function () {
+    $('#scrRate').textContent = fmtMb(CFG.bitrate);
+    $('#bRate').innerHTML = fmtMb(CFG.bitrate) + ' <small>Мбит/с</small>';
+    $('#tRate').innerHTML = fmtMb(CFG.bitrate) + '<small>Мбит/с</small>';
+  },
+
+  toastQuality: function () {
+    var el = $('#scrQuality');
+    el.style.color = '#ffd23f';
+    setTimeout(function () { el.style.color = ''; }, 600);
+  },
+
+  buildTicker: function () {
+    var items = [
+      'FRA-01 41%', 'MSK-01 63%', 'RTT 28 МС', '1440P60 · 11.0 МБИТ/С',
+      '12 483 СМОТРЯТ', 'ЭФИР СТАБИЛЕН', '2 004 КМ', 'AMS-01 12%',
+      '0 ДРОПОВ ЗА 6 ЧАСОВ', 'FRA-02 37%'
+    ];
+    var html = items.map(function (t) { return '<span>&nbsp;&nbsp;● ' + t + '&nbsp;&nbsp;|</span>'; }).join('');
+    $('#ticker').innerHTML = html + html;
+  },
+
+  tick: function () {
+    this.viewers += Math.round((Math.random() - 0.47) * 16);
+    this.viewers = clamp(this.viewers, 11600, 13400);
+    this.capViewers += Math.round((Math.random() - 0.5) * 3);
+    this.capViewers = clamp(this.capViewers, 1980, 2400);
+    var vTxt = this.viewers.toLocaleString('ru-RU');
+    $('#hdrViewers').textContent = vTxt;
+    $('#bViewers').textContent = vTxt;
+    $('#capViewers').textContent = this.capViewers.toLocaleString('ru-RU');
+
+    this.tc++;
+    var h = Math.floor(this.tc / 3600), m = Math.floor(this.tc / 60) % 60, s = this.tc % 60;
+    $('#scrTc').textContent = pad2(h) + ':' + pad2(m) + ':' + pad2(s);
+
+    var gb = fmtGB(Traffic.inBytes);
+    $('#hdrTraffic').textContent = gb;
+    $('#ftrTraffic').textContent = gb;
+    $('#bTraffic').innerHTML = gb + ' <small>ГБ</small>';
+    $('#sIn').textContent = fmtBytes(Traffic.inBytes);
+    $('#sOut').textContent = fmtBytes(Traffic.outBytes);
+    $('#sPeak').textContent = Traffic.peak.toFixed(1).replace('.', ',');
+    $('#sAvg').textContent = Traffic.avgMbps().toFixed(1).replace('.', ',');
+    $('#tPeak').textContent = 'ПИК ' + Traffic.peak.toFixed(1).replace('.', ',');
+
+    var live = Traffic.on ? Traffic.lastMbps() : 0;
+    if (Traffic.on && live > 0.2) {
+      $('#tRate').innerHTML = live.toFixed(1).replace('.', ',') + '<small>Мбит/с</small>';
+      $('#bRate').innerHTML = live.toFixed(1).replace('.', ',') + ' <small>Мбит/с</small>';
+    }
+
+    this.ping = clamp(this.ping + (Math.random() > 0.5 ? 1 : -1), 26, 31);
+    $('#bPing').innerHTML = this.ping + ' <small>мс</small>';
+
+    var bar = $('#scrBar');
+    if (bar) bar.style.width = (Traffic.on ? 38 + Math.sin(Date.now() / 4000) * 4 : 38) + '%';
+
+    drawChart();
+    this.syncOps();
+  },
+
+  openOps: function () {
+    $('#ops').classList.add('on');
+    $('#cfgUrl').value = CFG.url;
+    $('#cfgRate').value = CFG.bitrate;
+    $('#cfgRateLbl').textContent = fmtMb(CFG.bitrate);
+    this.syncOps();
+  },
+  closeOps: function () { $('#ops').classList.remove('on'); },
+
+  syncOps: function () {
+    if (!$('#ops').classList.contains('on')) return;
+    $('#opsMode').textContent = CFG.mode === 'demo' ? 'ДЕМО (без сети)' : 'СЕТЬ';
+    $('#opsRate').textContent = Traffic.lastMbps().toFixed(1).replace('.', ',') + ' Мбит/с';
+    $('#opsIn').textContent = fmtBytes(Traffic.inBytes);
+    $('#opsErr').textContent = Traffic.errors;
+  }
+};
+
+function debounce(fn, ms) {
+  var t;
+  return function () { clearTimeout(t); t = setTimeout(fn, ms); };
+}
+
+window.PIXELPORT = { Traffic: Traffic, CFG: CFG, UI: UI, Runner: R, Route: RT };
+
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { UI.init(); });
+else UI.init();
+
+})();
+</script>
+</body>
+</html>
