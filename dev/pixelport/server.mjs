@@ -4,7 +4,7 @@ import path from 'node:path';
 import os from 'node:os';
 import { fileURLToPath } from 'node:url';
 
-const ROOT = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'templates', 'pixelport');
 const args = process.argv.slice(2);
 const getArg = (name, def) => {
   const i = args.indexOf('--' + name);
@@ -71,7 +71,64 @@ function stream(req, res) {
   tick();
 }
 
-const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.png': 'image/png', '.svg': 'image/svg+xml' };
+const MIME = {
+  '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8',
+  '.css': 'text/css; charset=utf-8', '.png': 'image/png', '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg', '.svg': 'image/svg+xml', '.webm': 'video/webm',
+  '.mp4': 'video/mp4', '.ico': 'image/x-icon'
+};
+
+// то же, что создаёт install.sh через truncate: заявленный вес, нули внутри
+const PACKS = {
+  'PIXEL_RUNNER': 1503238554,
+  'DUNGEON_OF_BYTES': 2254857830,
+  'NEON_DRIFT_92': 901775360,
+  'SIBERIA_TRADER': 1181116006,
+  'GHOST_CARTRIDGE': 671088640,
+  'ROUTE_7_BERLIN': 1932735283
+};
+const ZEROS = Buffer.alloc(65536);
+
+function packFile(req, res, name) {
+  cors(res);
+  const base = name.replace(/\.(torent|iso)$/i, '');
+  const size = PACKS[base];
+  if (!size) { res.writeHead(404, { 'Content-Type': 'text/plain' }); return res.end('404'); }
+
+  // как в install.sh: .torent начинается с bencode-заголовка, .iso — с нулей
+  const head = /\.torent$/i.test(name)
+    ? Buffer.from('d8:announce45:udp://tracker.pixelport.example:6969/announce4:infod6:lengthi' +
+        size + 'e4:name' + Buffer.byteLength(name) + ':' + name +
+        '12:piece lengthi1048576e6:pieces20:')
+    : Buffer.alloc(0);
+
+  res.writeHead(200, {
+    'Content-Type': 'application/octet-stream',
+    'Content-Length': String(size),
+    'Cache-Control': 'no-store',
+    'Accept-Ranges': 'none'
+  });
+  if (req.method === 'HEAD') return res.end();
+
+  let sent = 0, closed = false;
+  res.on('close', () => { closed = true; });
+  if (head.length && head.length <= size) {
+    res.write(head);
+    sent = head.length;
+    stats.totalBytes += sent;
+  }
+  const tick = () => {
+    if (closed) return;
+    const n = Math.min(ZEROS.length, size - sent);
+    if (n <= 0) return res.end();
+    sent += n;
+    stats.totalBytes += n;
+    const ok = res.write(n === ZEROS.length ? ZEROS : ZEROS.subarray(0, n));
+    if (ok) setImmediate(tick);
+    else res.once('drain', tick);
+  };
+  tick();
+}
 
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, 'http://localhost');
@@ -83,6 +140,8 @@ const server = http.createServer(async (req, res) => {
     return res.end(JSON.stringify({ ...stats, uptime: (Date.now() - stats.startedAt) / 1000, rateMbps: RATE_MBPS }));
   }
   if (url.pathname.startsWith('/stream/')) return stream(req, res);
+
+  if (url.pathname.startsWith('/dl/')) return packFile(req, res, decodeURIComponent(url.pathname.slice(4)));
 
   let file = url.pathname === '/' ? '/index.html' : url.pathname;
   file = path.normalize(file).replace(/^(\.\.[/\\])+/, '');

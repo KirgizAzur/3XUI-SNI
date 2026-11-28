@@ -190,6 +190,7 @@ describe_template() {
         downloader) echo "безопасная передача данных (DataVault), RU" ;;
         filecloud) echo "облачное хранилище (CloudStore), EN" ;;
         games-site) echo "ретро-игры (RetroStream), RU" ;;
+        pixelport) echo "пиксельное ТВ и ретро-игры (PIXELPORT), RU" ;;
         speedtest) echo "тест скорости (SpeedCheck), RU" ;;
         youtube-captcha) echo "видеохостинг (Видеоландия), RU" ;;
         *) echo "статический сайт" ;;
@@ -435,6 +436,72 @@ deploy_site() {
     ok "Файлы сайта развёрнуты"
 }
 
+# pixelport: файлы раздачи.
+# Заглушка оправдывает трафик только если байты реально идут с сервера.
+# Поэтому рядом с сайтом лежат файлы заявленного веса, но разреженные:
+# ls показывает гигабайты, du — килобайты. Скачивание — настоящий трафик
+# из Германии в Россию, диск при этом почти не занят.
+create_pack_files() {
+    [[ "${TEMPLATE_NAME:-}" == "pixelport" ]] || return 0
+    step "Подготовка файлов раздачи dl/"
+
+    local dir="${SITE_DIR}/dl"
+    mkdir -p "$dir"
+
+    # имя|размер в байтах — должно совпадать с карточками в index.html
+    local packs=(
+        "PIXEL_RUNNER|1503238554"
+        "DUNGEON_OF_BYTES|2254857830"
+        "NEON_DRIFT_92|901775360"
+        "SIBERIA_TRADER|1181116006"
+        "GHOST_CARTRIDGE|671088640"
+        "ROUTE_7_BERLIN|1932735283"
+    )
+
+    local item base size ext fname path header checked=0
+    for item in "${packs[@]}"; do
+        base="${item%%|*}"
+        size="${item##*|}"
+        for ext in torent iso; do
+            path="${dir}/${base}.${ext}"
+            [[ -f "$path" ]] && continue
+            : >"$path"
+            # .iso по стандарту начинается с нулей (32 КБ заголовка ISO9660),
+            # .torent — с bencode, иначе первый же байт выдаёт подделку
+            if [[ "$ext" == "torent" ]]; then
+                fname="${base}.${ext}"
+                header="d8:announce45:udp://tracker.pixelport.example:6969/announce4:infod6:lengthi${size}e4:name${#fname}:${fname}12:piece lengthi1048576e6:pieces20:"
+                printf '%s' "$header" >"$path"
+            fi
+            if ! truncate -s "$size" "$path" 2>/dev/null; then
+                warn "Не удалось создать ${base}.${ext} (нужен truncate из coreutils)"
+                rm -f "$path"
+                continue
+            fi
+            chmod 644 "$path"
+
+            # проверяем разреженность на первом же файле: если ФС её не умеет,
+            # 17 ГБ раздачи забьют диск — лучше остановиться сразу
+            if [[ $checked -eq 0 ]]; then
+                checked=1
+                local used_kb
+                used_kb="$(du -k "$path" 2>/dev/null | cut -f1)"
+                if [[ -n "$used_kb" && "$used_kb" -gt 4096 ]]; then
+                    warn "Файловая система не поддерживает разреженные файлы."
+                    warn "Раздача не создана: иначе она заняла бы ~17 ГБ диска."
+                    rm -f "${dir}"/*.torent "${dir}"/*.iso
+                    return 0
+                fi
+            fi
+        done
+    done
+
+    local on_disk on_paper
+    on_disk="$(du -sh "$dir" 2>/dev/null | cut -f1)"
+    on_paper="$(du -sh --apparent-size "$dir" 2>/dev/null | cut -f1)"
+    ok "Раздача готова: ${on_paper:-?} по размеру, ${on_disk:-?} на диске"
+}
+
 disable_default_site() {
     local f
     for f in /etc/nginx/conf.d/default.conf /etc/nginx/sites-enabled/default; do
@@ -472,6 +539,13 @@ ${http2_line}
 
     root  ${SITE_DIR};
     index index.html;
+
+    location /dl/ {
+        try_files \$uri =404;
+        gzip off;
+        default_type application/octet-stream;
+        add_header Cache-Control "no-store";
+    }
 
     location / {
         try_files \$uri \$uri/ /index.html;
@@ -611,6 +685,7 @@ main() {
     choose_template
     check_certificate
     deploy_site
+    create_pack_files
     disable_default_site
     write_config
     test_and_reload

@@ -131,15 +131,32 @@ curl -sI --resolve example.com:9443:127.0.0.1 https://example.com:9443/
 | `downloader` | передача данных DataVault | RU | <img src="docs/screenshots/downloader.jpg" width="240"> |
 | `filecloud` | облачное хранилище CloudStore | EN | <img src="docs/screenshots/filecloud.jpg" width="240"> |
 | `games-site` | ретро-игры RetroStream | RU | <img src="docs/screenshots/games-site.jpg" width="240"> |
+| `pixelport` | пиксельное ТВ PIXELPORT | RU | <img src="docs/screenshots/pixelport.jpg" width="240"> |
 | `speedtest` | тест скорости SpeedCheck | RU | <img src="docs/screenshots/speedtest.jpg" width="240"> |
 | `youtube-captcha` | видеохостинг «Видеоландия» | RU | <img src="docs/screenshots/youtube-captcha.jpg" width="240"> |
-| `pixelport` | типографика PIXEL RUNNER | RU | <img src="docs/screenshots/PIXEL RUNNER.png" width="240"> |
 
 Список всегда можно получить командой:
 
 ```bash
 bash install.sh --list
 ```
+
+В `pixelport` кнопка «Скачать» на карточке игры отдаёт настоящий файл с сервера.
+Установщик создаёт в `/var/www/html/dl/` файлы заявленного веса (640 МБ, 1.4 ГБ
+и т. д.) как разреженные: `ls` показывает гигабайты, `du` — килобайты, а
+скачивание идёт реальным трафиком из Германии в Россию. Внутри — нули, но
+`.torent` начинается с bencode-заголовка, а `.iso` с нулей, как и положено
+ISO9660, так что первые байты не выдают подделку.
+
+Расширение переключается одной строкой — `DL.ext` в `index.html`; установщик
+кладёт оба файла, `.torent` и `.iso`. Для файла в 1.4 ГБ правдоподобнее `.iso`:
+настоящий торрент-файл весит десятки килобайт.
+
+Плеер — обычный `<video>` с роликом `media/pixel-runner.webm` (1280×720, 30 с,
+зациклен): настоящий файл, настоящие запросы, живые кнопки и перемотка.
+Никаких скрытых панелей, режимов «демо/сеть» и генераторов трафика в странице
+нет — они и были главным следом, по которому видно подделку в DevTools.
+Перезаписать ролик: `node dev/pixelport/tools/record.mjs <url> <outDir> 30`.
 
 ## Обновление и смена шаблона
 
@@ -219,9 +236,11 @@ tail -f /var/log/nginx/example.com-error.log
 │   ├── downloader/             DataVault (RU)
 │   ├── filecloud/              CloudStore (EN)
 │   ├── games-site/             RetroStream (RU)
+│   ├── pixelport/              PIXELPORT (RU)
 │   ├── speedtest/              SpeedCheck (RU)
-│   ├── youtube-captcha/        «Видеоландия» (RU)
-│   └── pixelport/              PIXEL RUNNER (RU)
+│   └── youtube-captcha/        «Видеоландия» (RU)
+├── dev/                        инструменты разработки, не деплоятся
+│   └── pixelport/              сервер для локальной проверки, скриншоты, запись ролика
 └── docs/screenshots/           превью шаблонов
 ```
 

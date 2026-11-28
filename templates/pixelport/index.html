@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>PIXELPORT — пиксельное телевидение и ретро-игры · эфир 24/7</title>
-<meta name="description" content="PIXELPORT — прямые эфиры в 1440p60, пиксельные сериалы и ретро-игры. Поток идёт напрямую с узла во Франкфурте: без рекламы, без сжатия, без посредников.">
+<meta name="description" content="PIXELPORT — прямые эфиры в 720p, пиксельные сериалы и ретро-игры. Поток идёт напрямую с узла во Франкфурте: без рекламы, без пересжатия, без посредников.">
 <meta name="theme-color" content="#08070f">
 <meta name="color-scheme" content="dark">
 <meta property="og:type" content="website">
 <meta property="og:title" content="PIXELPORT — пиксельное телевидение">
-<meta property="og:description" content="Прямые эфиры в 1440p60 и ретро-игры. Origin: Франкфурт. Edge: Москва.">
+<meta property="og:description" content="Прямые эфиры в 720p и ретро-игры. Origin: Франкфурт. Edge: Москва.">
 <meta property="og:image" content="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%2308070f'/%3E%3Cpath fill='%23ffd23f' d='M16 14h24v8h8v16h-8v12H16z'/%3E%3C/svg%3E">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%2308070f'/%3E%3Cpath fill='%23ffd23f' d='M4 3h5v2h1v3h-1v2H6v3H4z'/%3E%3C/svg%3E">
 <style>
@@ -86,11 +86,6 @@ a{color:inherit}
   border:2px solid var(--line);padding:5px 9px;color:var(--muted);white-space:nowrap;
 }
 .live-chip b{color:var(--ink);font-weight:400;font-variant-numeric:tabular-nums}
-.hdr-traffic{
-  font-size:12px;letter-spacing:.06em;color:var(--yellow);white-space:nowrap;
-  border-left:2px solid var(--line);padding-left:16px;font-variant-numeric:tabular-nums;
-}
-.hdr-traffic span{color:var(--yellow)}
 
 .ticker{
   overflow:hidden;border-bottom:3px solid var(--line);background:#0a0818;
@@ -141,7 +136,7 @@ main{position:relative;z-index:1}
   position:relative;border:4px solid #3a3570;background:#05030f;overflow:hidden;
   box-shadow:0 0 0 4px #0b0918,10px 10px 0 rgba(0,0,0,.55),0 0 70px rgba(53,230,208,.10);
 }
-.screen-cv{display:block;width:100%;height:auto;aspect-ratio:16/9;image-rendering:pixelated;background:#05030f}
+.screen-video{display:block;width:100%;height:auto;aspect-ratio:16/9;background:#05030f}
 .scr-glare{
   position:absolute;inset:0;pointer-events:none;
   background:linear-gradient(150deg,rgba(255,255,255,.06),transparent 38%);
@@ -216,23 +211,6 @@ main{position:relative;z-index:1}
 .tbl-wrap{overflow-x:auto;margin:0 -4px;padding:0 4px}
 .lbl{font-size:10px;letter-spacing:.14em;color:var(--dim);text-transform:uppercase}
 
-/* traffic */
-.tp-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:16px;flex-wrap:wrap}
-.big{font-size:34px;line-height:1;color:var(--cyan);font-variant-numeric:tabular-nums;letter-spacing:.01em}
-.big small{font-size:12px;color:var(--dim);letter-spacing:.1em;margin-left:4px}
-.tp-status{
-  display:flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.12em;color:var(--muted);
-  border:2px solid var(--line);padding:5px 9px;white-space:nowrap;
-}
-.tp-status.paused{color:var(--dim)}
-.tp-status.paused .dot{background:var(--dim);animation:none;opacity:.4}
-#chart{display:block;width:100%;height:130px;image-rendering:pixelated}
-.tp-legend{display:flex;justify-content:space-between;font-size:9.5px;letter-spacing:.1em;color:var(--dim);margin:2px 0 16px;gap:10px;flex-wrap:wrap}
-.tp-stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:3px solid var(--line);padding-top:14px}
-.tp-stats div{min-width:0;padding-right:10px}
-.tp-stats b{display:block;font-size:16px;font-weight:400;font-variant-numeric:tabular-nums;color:var(--ink);margin-top:4px;white-space:nowrap}
-.tp-stats b.sm{font-size:14px;color:var(--pink)}
-
 .why h3{
   font-size:11px;letter-spacing:.16em;color:var(--yellow);margin-bottom:16px;
   display:flex;align-items:center;gap:10px;
@@ -269,9 +247,10 @@ main{position:relative;z-index:1}
 .card-meta{font-size:10.5px;color:var(--dim);letter-spacing:.05em}
 .card-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:auto;padding-top:8px}
 .rating{font-size:10px;color:var(--yellow);letter-spacing:.14em}
-.dl-bar{height:7px;background:#0a0818;border:2px solid var(--line);display:none;margin-top:8px}
+.dl-bar{height:8px;background:#0a0818;border:2px solid var(--line);display:none;margin-top:8px;overflow:hidden}
 .dl-bar.on{display:block}
-.dl-bar i{display:block;height:100%;width:0;background:repeat-x;background-image:repeating-linear-gradient(90deg,var(--green) 0 7px,transparent 7px 10px);background-color:rgba(139,255,158,.2);transition:width .18s linear}
+.dl-bar i{display:block;height:100%;width:100%;background-image:repeating-linear-gradient(90deg,var(--green) 0 7px,transparent 7px 14px);background-repeat:repeat-x;animation:dlmove .8s linear infinite}
+@keyframes dlmove{from{background-position:0 0}to{background-position:14px 0}}
 
 .net-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:stretch}
 .route-cv{display:block;width:100%;height:auto;aspect-ratio:720/268;image-rendering:pixelated;background:#06040e;border:3px solid var(--line)}
@@ -300,11 +279,6 @@ main{position:relative;z-index:1}
 .msg p{font-size:12.5px;color:var(--muted);line-height:1.55;margin-top:3px}
 .chat-side h4{font-size:10px;letter-spacing:.14em;color:var(--yellow);margin-bottom:12px}
 .chat-side p{font-size:12px;color:var(--muted);margin-bottom:14px}
-.fake-input{
-  display:flex;gap:8px;border:2px solid var(--line);padding:7px 9px;background:#0a0818;
-  font-size:11.5px;color:var(--dim);align-items:center;
-}
-.fake-input span{flex:1}
 
 .ftr{max-width:var(--maxw);margin:64px auto 0;padding:34px 20px 40px;border-top:3px solid var(--line);position:relative;z-index:1}
 .ftr-in{display:grid;grid-template-columns:1.4fr .8fr 1fr .9fr;gap:26px}
@@ -321,28 +295,6 @@ main{position:relative;z-index:1}
   font-size:10px;color:var(--dim);letter-spacing:.04em;
 }
 .ftr-bot a{text-decoration:none}
-.ops-link{color:#332e60;text-decoration:none;font-size:12px}
-.ops-link:hover{color:var(--yellow)}
-
-.ops{
-  position:fixed;right:16px;bottom:16px;z-index:100;width:min(392px,calc(100vw - 32px));
-  border:3px solid var(--yellow);background:#0b0918;padding:14px;display:none;
-  box-shadow:10px 10px 0 rgba(0,0,0,.6);
-}
-.ops.on{display:block}
-.ops h4{font-size:10px;letter-spacing:.16em;color:var(--yellow);margin-bottom:4px;display:flex;justify-content:space-between;align-items:center}
-.ops .hint{font-size:10px;color:var(--dim);margin-bottom:12px;line-height:1.5}
-.ops label{display:block;font-size:9.5px;letter-spacing:.1em;color:var(--dim);margin:9px 0 4px;text-transform:uppercase}
-.ops input[type=text],.ops input[type=range]{
-  width:100%;background:#07060f;border:2px solid var(--line);color:var(--ink);
-  font:inherit;font-size:11px;padding:6px 8px;
-}
-.ops input[type=range]{padding:0;height:24px;accent-color:var(--yellow)}
-.ops .row{display:flex;gap:8px;margin-top:12px}
-.ops .row .btn{flex:1;padding:8px 10px;font-size:10px;box-shadow:3px 3px 0 #05040c}
-.ops .stat{display:flex;justify-content:space-between;font-size:10.5px;color:var(--muted);padding:3px 0;border-bottom:1px solid rgba(47,42,94,.5)}
-.ops .stat b{font-weight:400;color:var(--cyan);font-variant-numeric:tabular-nums}
-.ops .x{background:none;border:2px solid var(--line);color:var(--muted);cursor:pointer;font:inherit;font-size:10px;padding:1px 6px}
 
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
@@ -360,7 +312,6 @@ main{position:relative;z-index:1}
   .chat{grid-template-columns:1fr}
   .ftr-in{grid-template-columns:1fr 1fr}
   .nav{display:none}
-  .hdr-traffic{display:none}
 }
 @media (max-width:640px){
   .scr-rate{display:none}
@@ -399,13 +350,11 @@ main{position:relative;z-index:1}
     </a>
     <nav class="nav">
       <a href="#efir">ЭФИР</a>
-      <a href="#traffic">ТРАФИК</a>
       <a href="#catalog">КАТАЛОГ</a>
       <a href="#net">СЕТЬ</a>
       <a href="#chat">ЧАТ</a>
     </nav>
     <div class="live-chip"><i class="dot"></i> LIVE <b id="hdrViewers">12 483</b></div>
-    <div class="hdr-traffic"><span id="hdrTraffic">0.00</span> ГБ</div>
   </div>
 </header>
 
@@ -416,31 +365,32 @@ main{position:relative;z-index:1}
 <main>
   <section class="hero" id="efir">
     <div class="hero-copy">
-      <p class="eyebrow"><i class="dot"></i> В ЭФИРЕ 24/7 · КАНАЛ 07 · 1440P60</p>
+      <p class="eyebrow"><i class="dot"></i> В ЭФИРЕ 24/7 · КАНАЛ 07 · 720P</p>
       <h1 class="px" data-px="size:38;scale:3;fit:width;wrap:1;color:#ffffff;track:2">СМОТРИ В 8 БИТ</h1>
       <p class="lead">Пиксельные сериалы, ретро-турниры и прямые эфиры без пересжатия. Поток идёт <b>напрямую с нашего узла во Франкфурте</b> — без рекламы, без посредников и без «оптимизаторов» трафика.</p>
       <div class="cta">
-        <a class="btn btn-primary" href="#traffic">▶ СМОТРЕТЬ ЭФИР</a>
+        <a class="btn btn-primary" href="#efir">▶ СМОТРЕТЬ ЭФИР</a>
         <a class="btn" href="#catalog">СКАЧАТЬ ПАКЕТ</a>
       </div>
       <ul class="chips">
-        <li>1440p60</li><li>до 12 ГБ/час</li><li>0 рекламы</li><li>без регистрации</li>
+        <li>720p</li><li>4 узла</li><li>0 рекламы</li><li>без регистрации</li>
       </ul>
     </div>
 
     <div class="hero-screen">
       <div class="screen" id="screen">
-        <canvas id="runner" class="screen-cv" width="192" height="108"></canvas>
+        <video id="player" class="screen-video" src="/media/pixel-runner.webm" poster="/media/poster.jpg"
+               autoplay muted loop playsinline preload="auto" disablepictureinpicture
+               aria-label="Эфир канала 07 — Pixel Runner"></video>
         <div class="scr-glare"></div>
         <div class="scr-hud">
           <div class="scr-live"><i class="dot"></i>LIVE</div>
-          <div class="scr-meta"><b id="scrQuality">1440p60</b><span class="scr-rate"> · <i id="scrRate">9.8</i> Мбит/с</span></div>
+          <div class="scr-meta"><b>720p</b><span class="scr-rate"> · <i>1,2</i> Мбит/с</span></div>
         </div>
         <div class="scr-ctrl">
           <button class="cbtn" id="btnPlay" aria-label="Пауза" title="Пауза / продолжить">❚❚</button>
-          <div class="bar"><i id="scrBar"></i></div>
-          <span class="tc" id="scrTc">01:24:07</span>
-          <button class="cbtn" id="btnQ" title="Качество">1440p</button>
+          <div class="bar" id="scrBar"><i id="scrFill"></i></div>
+          <span class="tc" id="scrTc">00:00</span>
           <button class="cbtn" id="btnFs" title="Во весь экран" aria-label="Во весь экран">⛶</button>
         </div>
       </div>
@@ -454,57 +404,15 @@ main{position:relative;z-index:1}
   <div class="board">
     <div class="board-in">
       <div class="cell"><span class="lbl">СМОТРЯТ СЕЙЧАС</span><span class="val" id="bViewers">12 483</span></div>
-      <div class="cell"><span class="lbl">ТРАФИК СЕССИИ</span><span class="val gr" id="bTraffic">0.00 <small>ГБ</small></span></div>
-      <div class="cell"><span class="lbl">БИТРЕЙТ</span><span class="val cy" id="bRate">9.8 <small>Мбит/с</small></span></div>
+      <div class="cell"><span class="lbl">В ЭФИРЕ</span><span class="val gr" id="bUptime">1 284 <small>ч</small></span></div>
+      <div class="cell"><span class="lbl">БИТРЕЙТ</span><span class="val cy">1,2 <small>Мбит/с</small></span></div>
       <div class="cell"><span class="lbl">ЗАДЕРЖКА FRA</span><span class="val" id="bPing">28 <small>мс</small></span></div>
     </div>
   </div>
 
-  <section class="sec" id="traffic">
-    <div class="sec-h">
-      <span class="sec-num">01</span>
-      <h2 class="px" data-px="size:21;scale:3;color:#35e6d0">TRAFFIC</h2>
-      <span class="sec-sub">сколько ест эфир</span>
-      <span class="sec-rule"></span>
-    </div>
-
-    <div class="grid-2">
-      <div class="panel">
-        <div class="tp-head">
-          <div>
-            <div class="lbl">ТЕКУЩИЙ ПОТОК</div>
-            <div class="big" id="tRate">9.8<small>Мбит/с</small></div>
-          </div>
-          <div class="tp-status" id="tStatus"><i class="dot"></i><span>ПОТОК АКТИВЕН</span></div>
-        </div>
-        <canvas id="chart" width="700" height="130"></canvas>
-        <div class="tp-legend">
-          <span>60 СЕКУНД · ВХОДЯЩИЙ ПОТОК</span>
-          <span id="tPeak">ПИК 11.4</span>
-        </div>
-        <div class="tp-stats">
-          <div><span class="lbl">ПРИНЯТО</span><b id="sIn">0 Б</b></div>
-          <div><span class="lbl">ОТДАНО</span><b id="sOut" class="sm">0 Б</b></div>
-          <div><span class="lbl">ПИК</span><b id="sPeak">0</b></div>
-          <div><span class="lbl">СРЕДНЕЕ</span><b id="sAvg">0</b></div>
-        </div>
-      </div>
-
-      <div class="panel why">
-        <h3>ПОЧЕМУ СТОЛЬКО?</h3>
-        <ol>
-          <li><b>1440p60 без пересжатия.</b> Мы не транскодируем на лету: мастер-поток уходит зрителю как есть. Один час эфира — до 12 ГБ.</li>
-          <li><b>Пакеты лежат на origin.</b> Демо-паки и патчи кэшируются на московском узле, но при промахе кэша тянутся целиком из Франкфурта: гигабайты за минуты.</li>
-          <li><b>Обратный канал тоже полный.</b> Чат, телеметрия турниров и синхронизация сохранений идут с клиента в дата-центр — восходящий поток мы не экономим.</li>
-        </ol>
-        <div class="why-note">Средний зритель за вечер — <b>6–14 ГБ</b>. Так работает видео без компрессии: трафик честный, картинка чистая.</div>
-      </div>
-    </div>
-  </section>
-
   <section class="sec" id="catalog">
     <div class="sec-h">
-      <span class="sec-num">02</span>
+      <span class="sec-num">01</span>
       <h2 class="px" data-px="size:21;scale:3;color:#ffd23f">CATALOG</h2>
       <span class="sec-sub">паки и демо-сборки</span>
       <span class="sec-rule"></span>
@@ -514,7 +422,7 @@ main{position:relative;z-index:1}
 
   <section class="sec" id="net">
     <div class="sec-h">
-      <span class="sec-num">03</span>
+      <span class="sec-num">02</span>
       <h2 class="px" data-px="size:21;scale:3;color:#ff5d8f">NETWORK</h2>
       <span class="sec-sub">маршрут и узлы</span>
       <span class="sec-rule"></span>
@@ -550,11 +458,21 @@ main{position:relative;z-index:1}
         </div>
       </div>
     </div>
+
+    <div class="panel why" style="margin-top:18px">
+      <h3>ПОЧЕМУ СТОЛЬКО ТРАФИКА?</h3>
+      <ol>
+        <li><b>Эфир идёт без пересжатия.</b> Отдаём мастер-поток как есть, без транскодинга на лету и без «оптимизации» под мобильные сети.</li>
+        <li><b>Пакеты лежат на origin.</b> Демо-сборки и патчи кэшируются на московском узле, но при промахе кэша тянутся целиком из Франкфурта — гигабайты за минуты.</li>
+        <li><b>Обратный канал тоже полный.</b> Чат, телеметрия турниров и синхронизация сохранений идут с клиента в дата-центр — восходящий поток мы не экономим.</li>
+      </ol>
+      <div class="why-note">Пакеты — от <b>640 МБ до 2 ГБ</b>, эфир круглосуточно. Гигабайты набегают сами: один вечер с каналом — это несколько сборок и несколько часов эфира.</div>
+    </div>
   </section>
 
   <section class="sec" id="chat">
     <div class="sec-h">
-      <span class="sec-num">04</span>
+      <span class="sec-num">03</span>
       <h2 class="px" data-px="size:21;scale:3;color:#8bff9e">CHAT</h2>
       <span class="sec-sub">эфирный канал</span>
       <span class="sec-rule"></span>
@@ -565,8 +483,7 @@ main{position:relative;z-index:1}
         <h4>ПРАВИЛА КАНАЛА</h4>
         <p>Без спойлеров до титров. Без политики — для этого есть другие каналы. Уважайте 8 бит.</p>
         <h4>ПОДПИСКА НА ЭФИР</h4>
-        <p>Регистрация не нужна: эфир открыт, чат читается, пакеты качаются без аккаунта.</p>
-        <div class="fake-input"><span>написать в чат…</span><b style="color:#ffd23f">↵</b></div>
+        <p>Регистрация не нужна: эфир открыт, пакеты качаются без аккаунта. Чат открывается в приложении канала.</p>
       </div>
     </div>
   </section>
@@ -590,7 +507,7 @@ main{position:relative;z-index:1}
       <ul>
         <li><a href="#efir">Канал 07 · LIVE</a></li>
         <li><a href="#catalog">Каталог паков</a></li>
-        <li><a href="#traffic">Статистика потока</a></li>
+        <li><a href="#net">Статус узлов</a></li>
         <li><a href="#net">Статус узлов</a></li>
       </ul>
     </div>
@@ -609,39 +526,14 @@ main{position:relative;z-index:1}
         <li><a href="#">Impressum</a></li>
         <li><a href="#">Datenschutz</a></li>
         <li><a href="#">Nutzungsbedingungen</a></li>
-        <li><a href="#ops" class="ops-link" id="opsLink" title="Служебная консоль">¬</a></li>
       </ul>
     </div>
   </div>
   <div class="ftr-bot">
     <span>© 2026 PIXELPORT GmbH (i.G.) · Hanauer Landstraße 12, 60314 Frankfurt am Main</span>
-    <span>Сделано на 8 битах · <span id="ftrTraffic">0.00 ГБ</span> за сессию</span>
+    <span>Сделано на 8 битах</span>
   </div>
 </footer>
-
-<div class="ops" id="ops" role="dialog" aria-label="Служебная консоль">
-  <h4>СЛУЖЕБНАЯ КОНСОЛЬ <button class="x" id="opsClose" aria-label="Закрыть">✕</button></h4>
-  <p class="hint">Скрытая панель оператора. Открывается через <b>#ops</b> или клавишей <b>~</b>. Видна только вам — в публичной вёрстке её нет.</p>
-  <label>Режим</label>
-  <div class="row" style="margin-top:0">
-    <button class="btn btn-sm" id="mDemo">ДЕМО</button>
-    <button class="btn btn-sm" id="mLive">СЕТЬ</button>
-  </div>
-  <label>URL потока (chunked, без CORS-заголовков не выйдет)</label>
-  <input type="text" id="cfgUrl" placeholder="https://origin.example/stream/8bit.bin" spellcheck="false">
-  <label>Целевой битрейт: <b id="cfgRateLbl">9.8</b> Мбит/с</label>
-  <input type="range" id="cfgRate" min="500" max="40000" step="100" value="9800">
-  <div class="row">
-    <button class="btn btn-primary" id="opsStart">СТАРТ</button>
-    <button class="btn" id="opsStop">СТОП</button>
-  </div>
-  <div style="margin-top:12px">
-    <div class="stat"><span>режим</span><b id="opsMode">ДЕМО</b></div>
-    <div class="stat"><span>факт. скорость</span><b id="opsRate">—</b></div>
-    <div class="stat"><span>скачано</span><b id="opsIn">0 Б</b></div>
-    <div class="stat"><span>ошибок</span><b id="opsErr">0</b></div>
-  </div>
-</div>
 
 <noscript><div style="position:fixed;inset:0;background:#08070f;color:#ece9ff;z-index:200;padding:40px;font-family:monospace">Для просмотра эфира включите JavaScript.</div></noscript>
 
@@ -845,74 +737,6 @@ function drawText(g, str, x, y, color, s) {
 }
 function textWidth(str, s) { return String(str).length * 6 * (s || 1); }
 
-var LW = 384;
-var SKY = ['#0a0620', '#120c2e', '#1a1040', '#241450', '#2e1858', '#381a5e'];
-var GROUND = 88, W = 192, H = 108, PLAYER_X = 38;
-
-var R = {
-  cv: null, g: null, t: 0, dist: 0, speed: 46,
-  y: 0, vy: 0, onGround: true, bob: 0,
-  obs: [], nextObs: 1.4, dust: [], rain: [], stars: [],
-  far: null, mid: null, city: null, scroll: 0, score: 0,
-  paused: false, started: false
-};
-
-function initRunner() {
-  R.cv = $('#runner');
-  if (!R.cv) return;
-  R.g = R.cv.getContext('2d');
-  R.g.imageSmoothingEnabled = false;
-
-  var rf = mulberry(1337);
-  for (var i = 0; i < 46; i++) {
-    R.stars.push({ x: Math.floor(rf() * W), y: Math.floor(rf() * 54), p: rf() * 6.28, big: rf() > 0.9 });
-  }
-  for (i = 0; i < 34; i++) {
-    R.rain.push({ x: Math.floor(rf() * W), y: Math.floor(rf() * GROUND), v: 60 + rf() * 90, l: 2 + Math.floor(rf() * 3) });
-  }
-
-  R.far = makeLayer(LW, H, function (g) {
-    g.fillStyle = '#2a1454';
-    for (var x = 0; x < LW; x++) {
-      var hh = 58 + 7 * Math.sin(2 * Math.PI * 2 * x / LW) + 4 * Math.sin(2 * Math.PI * 5 * x / LW + 1.2) + 2.5 * Math.sin(2 * Math.PI * 11 * x / LW + 0.4);
-      g.fillRect(x, Math.floor(hh), 1, GROUND - Math.floor(hh));
-    }
-  });
-  R.mid = makeLayer(LW, H, function (g) {
-    g.fillStyle = '#1a0b38';
-    for (var x = 0; x < LW; x++) {
-      var hh = 66 + 5 * Math.sin(2 * Math.PI * 3 * x / LW + 0.7) + 3 * Math.sin(2 * Math.PI * 8 * x / LW + 2.1);
-      g.fillRect(x, Math.floor(hh), 1, GROUND - Math.floor(hh));
-    }
-  });
-  R.city = makeLayer(LW, H, function (g) {
-    var r = mulberry(90210), x = 0;
-    while (x < LW) {
-      var bw = 9 + Math.floor(r() * 15);
-      var bh = 10 + Math.floor(r() * 24);
-      var top = GROUND - bh;
-      if (x + bw > LW) bw = LW - x;
-      g.fillStyle = r() > 0.75 ? '#100726' : '#0c0520';
-      g.fillRect(x, top, bw, bh);
-      if (r() > 0.6) { g.fillStyle = '#160b32'; g.fillRect(x + Math.floor(bw / 2) - 1, top - 4, 2, 4); }
-      for (var wy = top + 3; wy < GROUND - 3; wy += 4) {
-        for (var wx = x + 2; wx < x + bw - 2; wx += 4) {
-          var lit = r();
-          if (lit > 0.42) {
-            g.fillStyle = lit > 0.94 ? '#35e6d0' : (lit > 0.86 ? '#ff5d8f' : '#ffd23f');
-            g.fillRect(wx, wy, 2, 2);
-          }
-        }
-      }
-      if (r() > 0.82) {
-        g.fillStyle = r() > 0.5 ? '#35e6d0' : '#ff5d8f';
-        g.fillRect(x + 2, top + Math.floor(bh / 2), Math.max(3, bw - 4), 2);
-      }
-      x += bw;
-    }
-  });
-}
-
 function pixelCircle(g, cx, cy, r, color) {
   g.fillStyle = color;
   for (var y = -r; y <= r; y++) {
@@ -948,156 +772,6 @@ function drawRunnerChar(g, x, y, f, bob) {
   runnerBody(g, x, y - 1, f, o);
   runnerBody(g, x, y + 1, f, o);
   runnerBody(g, x, y, f, null);
-}
-
-function drawObstacle(g, o) {
-  var y = GROUND - o.h;
-  if (o.type === 0) {
-    g.fillStyle = '#ff9f43'; g.fillRect(o.x + 1, y + 2, o.w - 2, o.h - 2);
-    g.fillRect(o.x + 2, y, o.w - 4, 2);
-    g.fillStyle = '#fff3d6'; g.fillRect(o.x + 1, y + 3, o.w - 2, 1);
-    g.fillStyle = '#8a4a10'; g.fillRect(o.x, y + o.h - 1, o.w, 1);
-  } else if (o.type === 1) {
-    g.fillStyle = '#8a5a2b'; g.fillRect(o.x, y, o.w, o.h);
-    g.fillStyle = '#b0763a'; g.fillRect(o.x + 1, y + 1, o.w - 2, 1);
-    g.fillStyle = '#5e3a17'; g.fillRect(o.x + 2, y + 2, o.w - 4, 1); g.fillRect(o.x + 2, y + 4, o.w - 4, 1);
-    g.fillStyle = '#3b240e'; g.fillRect(o.x, y, 1, o.h); g.fillRect(o.x + o.w - 1, y, 1, o.h);
-  } else {
-    g.fillStyle = '#241f4a'; g.fillRect(o.x, y, o.w, o.h);
-    g.fillStyle = '#3a3370'; g.fillRect(o.x + 1, y + 1, o.w - 2, 1);
-    g.fillStyle = '#8bff9e';
-    var t = Math.floor(R.t * 6);
-    for (var i = 0; i < 3; i++) {
-      if ((t + i) % 3 === 0) { g.fillStyle = '#8bff9e'; } else { g.fillStyle = '#2c6b3a'; }
-      g.fillRect(o.x + 1, y + 2 + i * 2, 1, 1);
-    }
-    g.fillStyle = '#35e6d0'; g.fillRect(o.x + o.w - 2, y + 2, 1, 1);
-    g.fillStyle = '#0d0622'; g.fillRect(o.x, y + o.h - 1, o.w, 1);
-  }
-}
-
-function stepRunner(dt) {
-  R.t += dt;
-  R.speed = 46 + Math.min(30, R.t * 0.5);
-  R.dist += R.speed * dt;
-  R.scroll = (R.scroll + R.speed * dt) % LW;
-
-  R.vy += 460 * dt;
-  R.y += R.vy * dt;
-  if (R.y > 0) { R.y = 0; R.vy = 0; if (!R.onGround) { R.onGround = true; dust(R); } }
-  R.bob = R.onGround ? (Math.floor(R.t * 12) % 2) : 0;
-
-  R.nextObs -= dt;
-  if (R.nextObs <= 0) {
-    var type = Math.floor(Math.random() * 3);
-    var hgt = type === 2 ? 10 : (type === 1 ? 6 : 7);
-    var wid = type === 2 ? 7 : (type === 1 ? 6 : 5);
-    R.obs.push({ x: W + 4, w: wid, h: hgt, type: type });
-    R.nextObs = 0.95 + Math.random() * 0.85;
-  }
-  for (var i = R.obs.length - 1; i >= 0; i--) {
-    var o = R.obs[i];
-    o.x -= R.speed * dt;
-    if (o.x < -10) R.obs.splice(i, 1);
-    if (R.onGround && o.x > PLAYER_X && o.x - (PLAYER_X + 10) < 20) {
-      R.y = -0.5; R.vy = -140; R.onGround = false;
-    }
-  }
-
-  for (i = R.dust.length - 1; i >= 0; i--) {
-    var p = R.dust[i];
-    p.x -= (R.speed * 0.7) * dt; p.y += p.vy * dt; p.vy += 60 * dt; p.life -= dt;
-    if (p.life <= 0) R.dust.splice(i, 1);
-  }
-  for (i = 0; i < R.rain.length; i++) {
-    var d = R.rain[i];
-    d.y += d.v * dt; d.x -= R.speed * 0.25 * dt;
-    if (d.y > GROUND) { d.y = -6; d.x = Math.random() * W; }
-    if (d.x < -2) d.x = W + 2;
-  }
-  R.score = Math.floor(R.dist / 6);
-}
-
-function dust() {
-  for (var i = 0; i < 4; i++) {
-    R.dust.push({ x: PLAYER_X + 4 + Math.random() * 6, y: GROUND - 2, vy: -18 - Math.random() * 22, life: 0.35 + Math.random() * 0.3 });
-  }
-}
-
-function drawRunner() {
-  var g = R.g;
-  if (!g) return;
-  var bandH = 14;
-  for (var b = 0; b < SKY.length; b++) {
-    g.fillStyle = SKY[b];
-    g.fillRect(0, b * bandH, W, bandH);
-  }
-  for (var i = 0; i < R.stars.length; i++) {
-    var s = R.stars[i];
-    if (Math.sin(R.t * 2.2 + s.p) < -0.45) continue;
-    g.fillStyle = (Math.floor(R.t * 2 + s.p * 2) % 7 === 0) ? '#ffd23f' : '#cfc6ff';
-    g.fillRect(s.x, s.y, s.big ? 2 : 1, 1);
-  }
-  pixelCircle(g, 156, 20, 9, '#ffe9a8');
-  g.fillStyle = '#f6d27a';
-  pixelCircle(g, 153, 18, 2, '#e9c15f');
-  pixelCircle(g, 158, 24, 2, '#e9c15f');
-  g.globalCompositeOperation = 'destination-out';
-  pixelCircle(g, 162, 15, 7, '#000');
-  g.globalCompositeOperation = 'source-over';
-
-  g.drawImage(R.far, -Math.floor(R.scroll * 0.18) % LW, 0);
-  g.drawImage(R.far, LW - (Math.floor(R.scroll * 0.18) % LW), 0);
-  g.drawImage(R.mid, -Math.floor(R.scroll * 0.42) % LW, 0);
-  g.drawImage(R.mid, LW - (Math.floor(R.scroll * 0.42) % LW), 0);
-  g.drawImage(R.city, -Math.floor(R.scroll * 0.8) % LW, 0);
-  g.drawImage(R.city, LW - (Math.floor(R.scroll * 0.8) % LW), 0);
-
-  g.fillStyle = '#0a0518'; g.fillRect(0, GROUND, W, H - GROUND);
-  g.fillStyle = '#ff5d8f'; g.fillRect(0, GROUND, W, 1);
-  g.globalAlpha = 0.20;
-  var refl = ['#ff5d8f', '#35e6d0', '#ffd23f', '#2f6df0'];
-  for (var k = 0; k < 9; k++) {
-    var rx = (((k * 29 - Math.floor(R.scroll * 0.9)) % W) + W) % W;
-    g.fillStyle = refl[k % 4];
-    g.fillRect(rx, GROUND + 2, 2 + (k % 3), 3 + (k % 4) * 3);
-  }
-  g.globalAlpha = 1;
-  g.fillStyle = '#1a0f36';
-  var dash = Math.floor(R.scroll) % 16;
-  for (var x = -dash; x < W; x += 16) g.fillRect(x, GROUND + 8, 7, 1);
-  for (x = -dash; x < W; x += 16) g.fillRect(x + 4, GROUND + 15, 9, 1);
-
-  for (i = 0; i < R.obs.length; i++) drawObstacle(g, R.obs[i]);
-  for (i = 0; i < R.dust.length; i++) {
-    g.fillStyle = 'rgba(200,190,255,' + (R.dust[i].life * 1.6).toFixed(2) + ')';
-    g.fillRect(Math.round(R.dust[i].x), Math.round(R.dust[i].y), 1, 1);
-  }
-  drawRunnerChar(g, PLAYER_X, GROUND - 14 + R.y, Math.floor(R.t * 10) % 2, R.bob);
-
-  for (i = 0; i < R.rain.length; i++) {
-    var d = R.rain[i];
-    g.fillStyle = 'rgba(150,190,255,.30)';
-    g.fillRect(Math.round(d.x), Math.round(d.y), 1, d.l);
-  }
-
-  var sc = String(R.score);
-  while (sc.length < 6) sc = '0' + sc;
-  var tw = textWidth(sc, 1);
-  drawText(g, sc, Math.round((W - tw) / 2) + 6, 6, '#ffd23f', 1);
-  g.fillStyle = '#ffd23f';
-  g.fillRect(Math.round((W - tw) / 2) - 6, 7, 3, 3);
-}
-
-function loopRunner(ts) {
-  requestAnimationFrame(loopRunner);
-  if (!R.started) return;
-  if (!R.last) R.last = ts;
-  var dt = Math.min(0.05, (ts - R.last) / 1000);
-  R.last = ts;
-  if (R.paused) return;
-  stepRunner(dt);
-  drawRunner();
 }
 
 var RT = { cv: null, g: null, t: 0, stars: [], packets: [] };
@@ -1224,43 +898,8 @@ function drawRoute(ts) {
   drawText(g, 'RTT 28 MS', 14, 32, '#ffd23f', 2);
   drawText(g, '10 GBPS', 14, 52, '#8a80c0', 2);
 
-  var rate = 'LIVE ' + fmtMb(Traffic.rate).replace(',', '.') + ' MBPS';
+  var rate = 'LIVE 1.2 MBPS';
   drawText(g, rate, 706 - textWidth(rate, 2), 12, '#35e6d0', 2);
-}
-
-var chartCv, chartG;
-function initChart() {
-  chartCv = $('#chart'); if (!chartCv) return;
-  chartG = chartCv.getContext('2d');
-  chartG.imageSmoothingEnabled = false;
-}
-function drawChart() {
-  if (!chartG) return;
-  var g = chartG, Wc = chartCv.width, Hc = chartCv.height;
-  g.fillStyle = '#0a0818'; g.fillRect(0, 0, Wc, Hc);
-  for (var r = 1; r < 4; r++) {
-    var gy = Math.floor(Hc * r / 4);
-    g.fillStyle = 'rgba(47,42,94,.5)';
-    for (var gx = 0; gx < Wc; gx += 10) g.fillRect(gx, gy, 5, 1);
-  }
-  var n = 60, gap = Math.floor(Wc / n), bw = Math.max(3, gap - 2), baseY = Hc - 4;
-  var data = Traffic.samples.slice(-n);
-  var off = n - data.length;
-  var maxV = 12;
-  for (var i = 0; i < data.length; i++) if (data[i] > maxV) maxV = data[i];
-  maxV = maxV * 1.18;
-  for (i = 0; i < n; i++) {
-    var x = i * gap + 1;
-    var v = i >= off ? data[i - off] : 0;
-    if (v <= 0.01) { g.fillStyle = '#171334'; g.fillRect(x, baseY - 2, bw, 2); continue; }
-    var bh = Math.max(2, Math.round((v / maxV) * (Hc - 12)));
-    var isLast = (i === n - 1);
-    g.fillStyle = isLast ? '#ffd23f' : (v > maxV * 0.86 ? '#8bff9e' : '#35e6d0');
-    g.fillRect(x, baseY - bh, bw, bh);
-    g.fillStyle = isLast ? '#fff3b0' : 'rgba(255,255,255,.45)';
-    g.fillRect(x, baseY - bh, bw, 2);
-  }
-  g.fillStyle = '#2f2a5e'; g.fillRect(0, Hc - 1, Wc, 1);
 }
 
 function px(g, x, y, w, h, c) { g.fillStyle = c; g.fillRect(x | 0, y | 0, w | 0, h | 0); }
@@ -1379,13 +1018,16 @@ function thumbRoute(g) {
 
 var THUMBS = { runner: thumbRunner, dungeon: thumbDungeon, drift: thumbDrift, siberia: thumbSiberia, ghost: thumbGhost, route: thumbRoute };
 
+var gib = function (x) { return Math.round(x * 1073741824); };
+var mib = function (x) { return Math.round(x * 1048576); };
+
 var PACKS = [
-  { id: 'runner', title: 'PIXEL RUNNER', meta: 'экшен · 1–4 игрока · 1992', size: 1.46e9, label: '1.4 ГБ', rating: '★★★★★' },
-  { id: 'dungeon', title: 'DUNGEON OF BYTES', meta: 'RPG · 120 часов · 1994', size: 2.18e9, label: '2.1 ГБ', rating: '★★★★☆' },
-  { id: 'drift', title: 'NEON DRIFT 92', meta: 'гонки · 6 трасс · 1993', size: 8.9e8, label: '860 МБ', rating: '★★★★☆' },
-  { id: 'siberia', title: 'SIBERIA TRADER', meta: 'стратегия · 1 игрок · 1996', size: 1.12e9, label: '1.1 ГБ', rating: '★★★☆☆' },
-  { id: 'ghost', title: 'GHOST CARTRIDGE', meta: 'хоррор · 4 часа · 1995', size: 6.6e8, label: '640 МБ', rating: '★★★★★' },
-  { id: 'route', title: 'ROUTE 7: BERLIN', meta: 'квест · 12 глав · 1997', size: 1.83e9, label: '1.8 ГБ', rating: '★★★★☆' }
+  { id: 'runner', title: 'PIXEL RUNNER', meta: 'экшен · 1–4 игрока · 1992', size: gib(1.4), label: '1.4 ГБ', rating: '★★★★★' },
+  { id: 'dungeon', title: 'DUNGEON OF BYTES', meta: 'RPG · 120 часов · 1994', size: gib(2.1), label: '2.1 ГБ', rating: '★★★★☆' },
+  { id: 'drift', title: 'NEON DRIFT 92', meta: 'гонки · 6 трасс · 1993', size: mib(860), label: '860 МБ', rating: '★★★★☆' },
+  { id: 'siberia', title: 'SIBERIA TRADER', meta: 'стратегия · 1 игрок · 1996', size: gib(1.1), label: '1.1 ГБ', rating: '★★★☆☆' },
+  { id: 'ghost', title: 'GHOST CARTRIDGE', meta: 'хоррор · 4 часа · 1995', size: mib(640), label: '640 МБ', rating: '★★★★★' },
+  { id: 'route', title: 'ROUTE 7: BERLIN', meta: 'квест · 12 глав · 1997', size: gib(1.8), label: '1.8 ГБ', rating: '★★★★☆' }
 ];
 
 function buildCards() {
@@ -1413,32 +1055,62 @@ function buildCards() {
   });
 }
 
+var DL = {
+  ext: '.torent',
+  dir: '/dl/',
+
+  fileName: function (pack) {
+    var base = String(pack.title).replace(/[^A-Za-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
+    return (base || 'PACK') + this.ext;
+  },
+
+  url: function (pack) {
+    return this.dir + encodeURIComponent(this.fileName(pack));
+  },
+
+  exists: async function (pack) {
+    try {
+      var res = await fetch(this.url(pack) + '?head=1', { method: 'HEAD', cache: 'no-store' });
+      return res.ok;
+    } catch (e) { return false; }
+  }
+};
+
 var dlBusy = false;
 async function startDownload(btn, pack) {
   if (dlBusy) return;
   dlBusy = true;
+
   var card = btn.closest('.card');
-  var bar = $('.dl-bar', card), fill = $('i', bar);
-  var old = btn.textContent;
-  bar.classList.add('on');
-  btn.disabled = true; btn.textContent = '0%';
-  try {
-    await Traffic.pull(pack.size, function (p) {
-      fill.style.width = (p * 100).toFixed(0) + '%';
-      btn.textContent = Math.min(99, Math.round(p * 100)) + '%';
-    });
-    fill.style.width = '100%';
-    btn.textContent = 'ГОТОВО';
-    setTimeout(function () { bar.classList.remove('on'); fill.style.width = '0%'; btn.textContent = old; btn.disabled = false; }, 2600);
-  } catch (e) {
-    btn.textContent = 'ОШИБКА';
-    setTimeout(function () { bar.classList.remove('on'); btn.textContent = old; btn.disabled = false; }, 2000);
+  var bar = $('.dl-bar', card);
+  var idle = btn.textContent;
+
+  function reset(label, delay) {
+    if (label) btn.textContent = label;
+    setTimeout(function () {
+      bar.classList.remove('on');
+      btn.textContent = idle;
+      btn.disabled = false;
+      dlBusy = false;
+    }, delay);
   }
-  dlBusy = false;
+
+  bar.classList.add('on');
+  btn.disabled = true;
+  btn.textContent = 'ПРОВЕРКА…';
+
+  if (!(await DL.exists(pack))) {
+    reset('НЕТ ЗЕРКАЛА', 2200);
+    return;
+  }
+
+  location.href = DL.url(pack);
+  btn.textContent = 'ЗАГРУЗКА…';
+  reset(null, 9000);
 }
 
 var CHAT = [
-  { n: 'leopold_8bit', t: '19:04', c: 'из Франкфурта тянет 11 мбит, картинка чистая. за три часа — 12 гигов, как и обещали', v: 0 },
+  { n: 'leopold_8bit', t: '19:04', c: 'из Франкфурта тянет ровно, картинка чистая. за вечер набежало шесть гигов вместе с патчем', v: 0 },
   { n: 'nastya_px', t: '19:05', c: 'пак NEON DRIFT качается четыре минуты, скорость не просела ни разу', v: 1 },
   { n: 'sergey_72', t: '19:06', c: 'у кого-нибудь ещё edge MSK-02 отдаёт 30 мс? или это только у меня', v: 2 },
   { n: 'byte_hunter', t: '19:07', c: '30–31 мс, норма. эфир не рвётся с 18:00, ни одного дропа', v: 3 },
@@ -1473,359 +1145,108 @@ function buildChat() {
   });
 }
 
-var CFG = {
-  mode: 'demo',
-  url: '/stream/8bit.bin',
-  bitrate: 9800,
-  capMB: 128
-};
-try {
-  var saved = JSON.parse(localStorage.getItem('pixelport.cfg') || 'null');
-  if (saved && typeof saved === 'object') {
-    if (saved.mode === 'live' || saved.mode === 'demo') CFG.mode = saved.mode;
-    if (typeof saved.url === 'string') CFG.url = saved.url;
-    if (+saved.bitrate > 0) CFG.bitrate = +saved.bitrate;
-  }
-} catch (e) {}
+var Player = {
+  el: null,
 
-function saveCfg() {
-  try { localStorage.setItem('pixelport.cfg', JSON.stringify({ mode: CFG.mode, url: CFG.url, bitrate: CFG.bitrate })); } catch (e) {}
+  init: function () {
+    var self = this;
+    this.el = $('#player');
+    if (!this.el) return;
+    var v = this.el;
+
+    $('#btnPlay').addEventListener('click', function () { self.toggle(); });
+    v.addEventListener('click', function () { self.toggle(); });
+    v.addEventListener('play', function () { $('#btnPlay').textContent = '❚❚'; });
+    v.addEventListener('pause', function () { $('#btnPlay').textContent = '▶'; });
+    v.addEventListener('timeupdate', function () {
+      var d = v.duration || 0;
+      if (!d) return;
+      $('#scrFill').style.width = (v.currentTime / d * 100).toFixed(2) + '%';
+      $('#scrTc').textContent = fmtTime(v.currentTime);
+    });
+    v.addEventListener('loadedmetadata', function () {
+      $('#scrTc').textContent = fmtTime(0);
+    });
+
+    $('#btnFs').addEventListener('click', function () {
+      var s = $('#screen');
+      if (!document.fullscreenElement) {
+        if (s.requestFullscreen) s.requestFullscreen();
+      } else if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    });
+  },
+
+  toggle: function () {
+    if (!this.el) return;
+    if (this.el.paused) this.el.play().catch(function () {});
+    else this.el.pause();
+  }
+};
+
+function fmtTime(sec) {
+  sec = Math.max(0, Math.floor(sec || 0));
+  var m = Math.floor(sec / 60), s = sec % 60;
+  return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
 }
 
-var Traffic = {
-  on: false,
-  inBytes: 0, outBytes: 0, errors: 0,
-  samples: [], peak: 0,
-  _lastBytes: 0, _lastAt: 0, _gen: 0, _ctrl: null, _demoId: null,
-  startedAt: 0,
-
-  get rate() { return CFG.bitrate; },
-  bps: function () { return CFG.bitrate * 125; },
-
-  addIn: function (n) { this.inBytes += n; },
-  addOut: function (n) { this.outBytes += n; },
-
-  start: function () {
-    if (this.on) return;
-    this.on = true;
-    this._gen++;
-    this.startedAt = Date.now();
-    if (CFG.mode === 'demo') this._startDemo();
-    else this._startLive(this._gen);
-    UI.syncPlay();
-  },
-  stop: function () {
-    this.on = false;
-    this._gen++;
-    if (this._demoId) { clearInterval(this._demoId); this._demoId = null; }
-    if (this._ctrl) { try { this._ctrl.abort(); } catch (e) {} this._ctrl = null; }
-    UI.syncPlay();
-  },
-  restart: function () {
-    var was = this.on;
-    this.stop();
-    if (was) setTimeout(this.start.bind(this), 60);
-  },
-
-  _startDemo: function () {
-    var self = this;
-    if (this._demoId) clearInterval(this._demoId);
-    this._demoId = setInterval(function () {
-      if (!self.on || CFG.mode !== 'demo') return;
-      var per = self.bps() * 0.25;
-      self.addIn(per * (0.91 + Math.random() * 0.18));
-      self.addOut(per * 0.0035);
-    }, 250);
-  },
-
-  _startLive: function (gen) {
-    var self = this;
-    this._ctrl = new AbortController();
-    var signal = this._ctrl.signal;
-    (async function () {
-      while (self.on && gen === self._gen && CFG.mode === 'live') {
-        var url = CFG.url;
-        if (!url) { self.errors++; await sleep(1500); continue; }
-        var res;
-        try {
-          res = await fetch(url + (url.indexOf('?') > -1 ? '&' : '?') + '_=' + Date.now(), {
-            cache: 'no-store', signal: signal, mode: 'cors', credentials: 'omit', redirect: 'follow'
-          });
-          if (!res.ok || !res.body) throw new Error('HTTP ' + res.status);
-        } catch (e) {
-          if (!self.on || gen !== self._gen) return;
-          self.errors++; UI.syncOps();
-          await sleep(1500);
-          continue;
-        }
-        var reader = res.body.getReader();
-        var session = 0, t0 = now();
-        try {
-          for (;;) {
-            var chunk = await reader.read();
-            if (chunk.done) break;
-            self.addIn(chunk.value.byteLength);
-            self.addOut(chunk.value.byteLength * 0.004);
-            session += chunk.value.byteLength;
-            var rate = self.bps();
-            var expect = (now() - t0) / 1000 * rate;
-            if (session - expect > 131072) {
-              await sleep(Math.min(3000, (session - expect) / rate * 1000));
-            }
-            if (!self.on || gen !== self._gen || CFG.mode !== 'live') { try { reader.cancel(); } catch (e) {} break; }
-          }
-        } catch (e) {
-          if (!self.on || gen !== self._gen) return;
-          self.errors++; UI.syncOps();
-        }
-      }
-    })();
-  },
-
-  sample: function () {
-    var t = now();
-    if (!this._lastAt) { this._lastAt = t; this._lastBytes = this.inBytes; return; }
-    var dt = (t - this._lastAt) / 1000;
-    if (dt < 0.5) return;
-    var db = this.inBytes - this._lastBytes;
-    var mbps = (db * 8 / 1e6) / dt;
-    this.samples.push(mbps);
-    if (this.samples.length > 60) this.samples.shift();
-    if (mbps > this.peak) this.peak = mbps;
-    this._lastAt = t; this._lastBytes = this.inBytes;
-  },
-  seedSamples: function () {
-    var base = CFG.bitrate / 1000;
-    this.samples = [];
-    this.peak = 0;
-    for (var i = 0; i < 60; i++) {
-      var v = base * (0.88 + Math.random() * 0.2);
-      this.samples.push(v);
-      if (v > this.peak) this.peak = v;
-    }
-    this._lastAt = 0; this._lastBytes = this.inBytes;
-  },
-  lastMbps: function () {
-    return this.samples.length ? this.samples[this.samples.length - 1] : 0;
-  },
-  avgMbps: function () {
-    if (!this.samples.length) return 0;
-    var s = 0;
-    for (var i = 0; i < this.samples.length; i++) s += this.samples[i];
-    return s / this.samples.length;
-  },
-  reset: function () {
-    this.inBytes = 0; this.outBytes = 0; this.samples = []; this.peak = 0;
-    this._lastBytes = 0; this._lastAt = 0; this.startedAt = Date.now();
-  },
-
-  pull: async function (bytes, onProgress) {
-    var self = this;
-    var rate = this.bps();
-    if (CFG.mode === 'demo' || !CFG.url) {
-      var dur = 2.6, steps = 26, added = 0;
-      var budget = Math.min(bytes, rate * dur);
-      for (var i = 0; i < steps; i++) {
-        await sleep(dur * 1000 / steps);
-        var add = budget / steps;
-        added += add;
-        this.addIn(add); this.addOut(add * 0.02);
-        if (onProgress) onProgress((i + 1) / steps);
-      }
-      return added;
-    }
-    var cap = Math.min(bytes, CFG.capMB * 1048576);
-    var ctrl = new AbortController();
-    var res = await fetch(CFG.url + (CFG.url.indexOf('?') > -1 ? '&' : '?') + '_p=' + Date.now(), { cache: 'no-store', signal: ctrl.signal, mode: 'cors' });
-    if (!res.ok || !res.body) throw new Error('HTTP ' + res.status);
-    var reader = res.body.getReader(), got = 0, t0 = now();
-    for (;;) {
-      var c = await reader.read();
-      if (c.done) break;
-      got += c.value.byteLength;
-      this.addIn(c.value.byteLength); this.addOut(c.value.byteLength * 0.01);
-      if (onProgress) onProgress(Math.min(1, got / cap));
-      var expect = (now() - t0) / 1000 * rate;
-      if (got - expect > 131072) await sleep(Math.min(400, (got - expect) / rate * 1000));
-      if (got >= cap) { try { await reader.cancel(); } catch (e) {} break; }
-    }
-    return got;
-  }
-};
-
 var UI = {
-  qualityIdx: 2,
-  qualities: [2800, 6500, 11000],
-  qLabels: ['720p', '1080p', '1440p'],
-  tc: 1 * 3600 + 24 * 60 + 7,
   viewers: 12483,
   capViewers: 2148,
   ping: 28,
+  frames: 0,
 
   init: function () {
     var self = this;
     renderAllPx();
-    initRunner(); initRoute(); initChart();
-    buildCards(); buildChat(); this.buildTicker();
-    if (R.cv) { R.started = true; requestAnimationFrame(loopRunner); }
-    if (RT.cv) requestAnimationFrame(function tick(ts) { requestAnimationFrame(tick); RT.t = ts / 1000; drawRoute(); });
+    initRoute();
+    buildCards();
+    buildChat();
+    this.buildTicker();
+    Player.init();
 
-    this.applyQuality(2);
-    this.bind();
-    Traffic.seedSamples();
-    Traffic.start();
-    setInterval(function () { Traffic.sample(); }, 1000);
-    setInterval(function () { self.tick(); }, 250);
+    if (RT.cv) {
+      requestAnimationFrame(function tick(ts) {
+        requestAnimationFrame(tick);
+        RT.t = ts / 1000;
+        drawRoute();
+      });
+    }
+
+    setInterval(function () { self.tick(); }, 1000);
     setTimeout(renderAllPx, 400);
     window.addEventListener('resize', debounce(renderAllPx, 220));
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(renderAllPx);
-    window.addEventListener('hashchange', function () { if (location.hash === '#ops') self.openOps(); });
-    if (location.hash === '#ops') setTimeout(function () { self.openOps(); }, 50);
-  },
-
-  bind: function () {
-    var self = this;
-    $('#btnPlay').addEventListener('click', function () { self.togglePlay(); });
-    $('#btnQ').addEventListener('click', function () {
-      self.applyQuality((self.qualityIdx + 1) % 3);
-      self.toastQuality();
-    });
-    $('#btnFs').addEventListener('click', function () {
-      var el = $('#screen');
-      if (!document.fullscreenElement) { if (el.requestFullscreen) el.requestFullscreen(); }
-      else if (document.exitFullscreen) document.exitFullscreen();
-    });
-    $('#screen').addEventListener('click', function (e) {
-      if (e.target.closest('.scr-ctrl')) return;
-      self.togglePlay();
-    });
-    $('#opsLink').addEventListener('click', function (e) { e.preventDefault(); self.openOps(); });
-    $('#opsClose').addEventListener('click', function () { self.closeOps(); });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === '~' || e.key === '`') { e.preventDefault(); $('#ops').classList.contains('on') ? self.closeOps() : self.openOps(); }
-      if (e.key === 'Escape') self.closeOps();
-      if (e.key === ' ' && e.target === document.body) { e.preventDefault(); self.togglePlay(); }
-    });
-    $('#mDemo').addEventListener('click', function () { CFG.mode = 'demo'; saveCfg(); Traffic.restart(); self.syncOps(); });
-    $('#mLive').addEventListener('click', function () { CFG.mode = 'live'; saveCfg(); Traffic.restart(); self.syncOps(); });
-    $('#cfgUrl').addEventListener('change', function (e) { CFG.url = e.target.value.trim(); saveCfg(); Traffic.restart(); self.syncOps(); });
-    $('#cfgRate').addEventListener('input', function (e) {
-      CFG.bitrate = +e.target.value;
-      $('#cfgRateLbl').textContent = fmtMb(CFG.bitrate);
-      saveCfg(); self.applyRateLabels();
-    });
-    $('#opsStart').addEventListener('click', function () { Traffic.start(); self.syncOps(); });
-    $('#opsStop').addEventListener('click', function () { Traffic.stop(); self.syncOps(); });
-  },
-
-  togglePlay: function () {
-    if (Traffic.on) Traffic.stop(); else Traffic.start();
-    R.paused = !Traffic.on;
-    $('#screen').classList.toggle('paused', !Traffic.on);
-    $('#btnPlay').textContent = Traffic.on ? '❚❚' : '▶';
-    this.syncPlay();
-  },
-
-  syncPlay: function () {
-    var st = $('#tStatus');
-    if (!st) return;
-    st.classList.toggle('paused', !Traffic.on);
-    $('span', st).textContent = Traffic.on ? 'ПОТОК АКТИВЕН' : 'ПОТОК ПРИОСТАНОВЛЕН';
-    R.paused = !Traffic.on;
-    $('#screen').classList.toggle('paused', !Traffic.on);
-    $('#btnPlay').textContent = Traffic.on ? '❚❚' : '▶';
-  },
-
-  applyQuality: function (i) {
-    this.qualityIdx = i;
-    var rates = this.qualities, lbl = this.qLabels;
-    CFG.bitrate = rates[i];
-    $('#btnQ').textContent = i === 2 ? '1440p' : lbl[i];
-    $('#scrQuality').textContent = lbl[i] + (i === 2 ? '60' : '60');
-    $('#cfgRate').value = CFG.bitrate;
-    $('#cfgRateLbl').textContent = fmtMb(CFG.bitrate);
-    $('#scrRate').textContent = fmtMb(CFG.bitrate);
-    saveCfg();
-    this.applyRateLabels();
-  },
-
-  applyRateLabels: function () {
-    $('#scrRate').textContent = fmtMb(CFG.bitrate);
-    $('#bRate').innerHTML = fmtMb(CFG.bitrate) + ' <small>Мбит/с</small>';
-    $('#tRate').innerHTML = fmtMb(CFG.bitrate) + '<small>Мбит/с</small>';
-  },
-
-  toastQuality: function () {
-    var el = $('#scrQuality');
-    el.style.color = '#ffd23f';
-    setTimeout(function () { el.style.color = ''; }, 600);
   },
 
   buildTicker: function () {
     var items = [
-      'FRA-01 41%', 'MSK-01 63%', 'RTT 28 МС', '1440P60 · 11.0 МБИТ/С',
+      'FRA-01 41%', 'MSK-01 63%', 'RTT 28 МС', '720P · 1,2 МБИТ/С',
       '12 483 СМОТРЯТ', 'ЭФИР СТАБИЛЕН', '2 004 КМ', 'AMS-01 12%',
-      '0 ДРОПОВ ЗА 6 ЧАСОВ', 'FRA-02 37%'
+      'FRA-02 37%', 'КАНАЛ 07 · 1992'
     ];
     var html = items.map(function (t) { return '<span>&nbsp;&nbsp;● ' + t + '&nbsp;&nbsp;|</span>'; }).join('');
     $('#ticker').innerHTML = html + html;
   },
 
   tick: function () {
-    this.viewers += Math.round((Math.random() - 0.47) * 16);
-    this.viewers = clamp(this.viewers, 11600, 13400);
-    this.capViewers += Math.round((Math.random() - 0.5) * 3);
-    this.capViewers = clamp(this.capViewers, 1980, 2400);
-    var vTxt = this.viewers.toLocaleString('ru-RU');
-    $('#hdrViewers').textContent = vTxt;
-    $('#bViewers').textContent = vTxt;
-    $('#capViewers').textContent = this.capViewers.toLocaleString('ru-RU');
+    this.frames++;
 
-    this.tc++;
-    var h = Math.floor(this.tc / 3600), m = Math.floor(this.tc / 60) % 60, s = this.tc % 60;
-    $('#scrTc').textContent = pad2(h) + ':' + pad2(m) + ':' + pad2(s);
-
-    var gb = fmtGB(Traffic.inBytes);
-    $('#hdrTraffic').textContent = gb;
-    $('#ftrTraffic').textContent = gb;
-    $('#bTraffic').innerHTML = gb + ' <small>ГБ</small>';
-    $('#sIn').textContent = fmtBytes(Traffic.inBytes);
-    $('#sOut').textContent = fmtBytes(Traffic.outBytes);
-    $('#sPeak').textContent = Traffic.peak.toFixed(1).replace('.', ',');
-    $('#sAvg').textContent = Traffic.avgMbps().toFixed(1).replace('.', ',');
-    $('#tPeak').textContent = 'ПИК ' + Traffic.peak.toFixed(1).replace('.', ',');
-
-    var live = Traffic.on ? Traffic.lastMbps() : 0;
-    if (Traffic.on && live > 0.2) {
-      $('#tRate').innerHTML = live.toFixed(1).replace('.', ',') + '<small>Мбит/с</small>';
-      $('#bRate').innerHTML = live.toFixed(1).replace('.', ',') + ' <small>Мбит/с</small>';
+    if (this.frames % 4 === 0) {
+      this.viewers += Math.round((Math.random() - 0.47) * 16);
+      this.viewers = clamp(this.viewers, 11600, 13400);
+      var vTxt = this.viewers.toLocaleString('ru-RU');
+      $('#hdrViewers').textContent = vTxt;
+      $('#bViewers').textContent = vTxt;
     }
 
-    this.ping = clamp(this.ping + (Math.random() > 0.5 ? 1 : -1), 26, 31);
-    $('#bPing').innerHTML = this.ping + ' <small>мс</small>';
-
-    var bar = $('#scrBar');
-    if (bar) bar.style.width = (Traffic.on ? 38 + Math.sin(Date.now() / 4000) * 4 : 38) + '%';
-
-    drawChart();
-    this.syncOps();
-  },
-
-  openOps: function () {
-    $('#ops').classList.add('on');
-    $('#cfgUrl').value = CFG.url;
-    $('#cfgRate').value = CFG.bitrate;
-    $('#cfgRateLbl').textContent = fmtMb(CFG.bitrate);
-    this.syncOps();
-  },
-  closeOps: function () { $('#ops').classList.remove('on'); },
-
-  syncOps: function () {
-    if (!$('#ops').classList.contains('on')) return;
-    $('#opsMode').textContent = CFG.mode === 'demo' ? 'ДЕМО (без сети)' : 'СЕТЬ';
-    $('#opsRate').textContent = Traffic.lastMbps().toFixed(1).replace('.', ',') + ' Мбит/с';
-    $('#opsIn').textContent = fmtBytes(Traffic.inBytes);
-    $('#opsErr').textContent = Traffic.errors;
+    if (this.frames % 6 === 0) {
+      this.ping = clamp(this.ping + (Math.random() > 0.5 ? 1 : -1), 26, 31);
+      $('#bPing').innerHTML = this.ping + ' <small>мс</small>';
+      this.capViewers = clamp(this.capViewers + Math.round((Math.random() - 0.5) * 3), 1980, 2400);
+      $('#capViewers').textContent = this.capViewers.toLocaleString('ru-RU');
+    }
   }
 };
 
@@ -1834,10 +1255,11 @@ function debounce(fn, ms) {
   return function () { clearTimeout(t); t = setTimeout(fn, ms); };
 }
 
-window.PIXELPORT = { Traffic: Traffic, CFG: CFG, UI: UI, Runner: R, Route: RT };
-
-if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { UI.init(); });
-else UI.init();
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', function () { UI.init(); });
+} else {
+  UI.init();
+}
 
 })();
 </script>
